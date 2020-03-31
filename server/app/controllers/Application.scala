@@ -1,4 +1,4 @@
-package edu.trinity.videoquizreact.controllers
+package controllers
 
 import javax.inject._
 
