@@ -10,7 +10,124 @@
 -->
 
   <h2>Javascript Midi test</h2>
-  <li>You played note: <em>@message</em></li>
+  <li>You played note: <input type="text" id="notePlayed"></input></li>
+
+
+  <audio id = "kick">
+    <source src="@routes.Assets.versioned("sounds/virtual-drum-machine/kick.mp3")" type="audio/mpeg">
+  </audio>
+ <audio id = "snare">
+    <source src="@routes.Assets.versioned("sounds/virtual-drum-machine/snare.mp3")" type="audio/mpeg">
+  </audio>
+   <audio id = "hihat">
+    <source src="@routes.Assets.versioned("sounds/virtual-drum-machine/hihat-closed.mp3")" type="audio/mpeg">
+  </audio>
+   <audio id = "ride">
+    <source src="@routes.Assets.versioned("sounds/virtual-drum-machine/ride.mp3")" type="audio/mpeg">
+  </audio>
+   <audio id = "stick-hit">
+    <source src="@routes.Assets.versioned("sounds/virtual-drum-machine/stick-hit.mp3")" type="audio/mpeg">
+  </audio>
+   <audio id = "crash">
+    <source src="@routes.Assets.versioned("sounds/virtual-drum-machine/crash.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "C4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/C4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "Db4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/Db4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "D4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/D4.mp3")" type="audio/mpeg">
+  </audio>
+
+
+  <audio id = "Eb4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/Eb4.mp3")" type="audio/mpeg">
+  </audio>
+
+ <audio id = "E4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/E4.mp3")" type="audio/mpeg">
+  </audio>
+  <audio id = "F4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/F4.mp3")" type="audio/mpeg">
+  </audio>
+
+
+  <audio id = "Gb4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/Gb4.mp3")" type="audio/mpeg">
+  </audio>
+
+
+  <audio id = "G4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/G4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "Ab4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/Ab4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "A4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/A4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "Bb4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/Bb4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "B4">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/B4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "C5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/C5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "Db5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/Db5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "D5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/D5.mp3")" type="audio/mpeg">
+  </audio>
+
+    <audio id = "Eb5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/Eb5.mp3")" type="audio/mpeg">
+  </audio>
+      <audio id = "E5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/E5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "F5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/F5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "F#5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/Gb5.mp3")" type="audio/mpeg">
+  </audio>
+
+    <audio id = "G5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/G5.mp3")" type="audio/mpeg">
+  </audio>
+      <audio id = "Ab5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/Ab5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "A5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/A5.mp3")" type="audio/mpeg">
+  </audio>
+
+    <audio id = "Bb5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/Bb5.mp3")" type="audio/mpeg">
+  </audio>
+      <audio id = "B5">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/B5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "C6">
+    <source src="@routes.Assets.versioned("sounds/virtual-piano/C6.mp3")" type="audio/mpeg">
+  </audio>
+
+
+  <!--<script src="WebMIDIAPI.min.js"></script>    -->
+  <script src="@routes.Assets.versioned("javascript/handleMidi.js")"></script>
 
   <!--<div id="root"></div>-->
 }
