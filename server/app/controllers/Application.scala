@@ -12,4 +12,12 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
     Ok(views.html.index(SharedMessages.itWorks))
   }
 
+  def login = Action {
+  	Ok(views.html.login())
+  }
+
+  def home = Action {
+  	Ok(views.html.home())
+  }
+
 }

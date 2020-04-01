@@ -1,6 +1,6 @@
 @(message: String)
 
-@main("Play with Scala.js") {
+@main("Play Midi") {
 
  <!-- <h2>Play and Scala.js share a same message</h2>
   <ul>
@@ -8,9 +8,20 @@
     <li>Scala.js shouts out: <em id="scalajsShoutOut"></em></li>
   </ul>
 -->
+<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+<h1>Sam's Project</h1>
 
-  <h2>Javascript Midi test</h2>
+  <h2>Initiated Midi Playback</h2>
   <li>You played note: <input type="text" id="notePlayed"></input></li>
+  <button id="startRec" onclick="handleRecording()">Play recording</button>
+  <button id="deleteRec" onclick="deleteRecording()">Delete recording</button>
+<br>
+  <button>Invite Users</button>
+  <input type="text" placeholder="Enter username to invite here">
+  <br>
+  <a href="@routes.Application.index" name="loginButton">Save project</a>
+<br>
+<a href="@routes.Application.home" name="loginButton">Home</a>
 
 
   <audio id = "kick">

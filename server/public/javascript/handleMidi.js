@@ -1,4 +1,10 @@
 console.log("js is here");
+let currTime = new Date();
+let start = currTime.getTime();
+
+console.log(start);
+
+let playBackArray = [];
 
 let noteInput = document.getElementById("notePlayed");
 
@@ -40,6 +46,33 @@ noteInput.value = "";
 navigator.requestMIDIAccess()
     .then(onMIDISuccess, onMIDIFailure);
 
+
+function handleRecording() {
+	let lastTime = 0;
+    for(let i = 0; i < playBackArray.length; i++) {
+    	if(i%2 == 0) {
+    	    playNote(playBackArray[i], true);
+    	    //sleep(100)//playBackArray[i+1] - lastTime)
+    	    //lastTime = playBackArray[i+1];
+        } 
+
+    }
+}
+
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
+
+function deleteRecording() {
+	playBackArray = [];
+}
+
+
 function stopAudio(audio) {
 	audio.pause();
 	audio.currentTime = 0;
@@ -78,7 +111,12 @@ function getMIDIMessage(midiMessage) {
     if(midiMessage.data[0] == 144) {
     	console.log("You played note " + midiMessage.data[1]);
     	noteInput.value = midiMessage.data[1];
+    	playBackArray.push(noteInput.value);
+    	currTime = new Date();
+    	console.log(currTime.getTime() - start);
+    	playBackArray.push(currTime.getTime() - start);
     	playNote(noteInput.value, true);
+    	console.log(playBackArray);
     } /*else if (midiMessage.data[0] == 128) {
     	playNote(noteInput.value, false)
     }*/
