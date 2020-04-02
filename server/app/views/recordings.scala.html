@@ -1,0 +1,47 @@
+@()
+
+<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+  <audio id = "song">
+    <source src="@routes.Assets.versioned("sounds/recordings/Gartosis.mp3")" type="audio/mp3">
+  </audio>
+
+
+<h1>Recordings Published by Users</h1>
+
+<table>
+<tr>
+	<th>User</th>
+<th>Title</th>
+<th>Click to play</th>
+</tr>
+<tr>
+	<th>User504</th>
+<th>An Interesting Title</th>
+<th><a href="@routes.Application.index" name="loginButton">Play</a>
+</th>
+</tr>
+<tr>
+	<th>User777</th>
+<th>A Generic Title</th>
+<th><a href="@routes.Application.index" name="loginButton">Play</a>
+
+</tr>
+<tr>
+	<th>Sam</th>
+<th>Gartosis</th>
+<th><button onclick="playSong()" name="loginButton">Play</button>
+
+</tr>
+</table>
+
+
+<a href="@routes.Application.home" name="loginButton">Home</a>
+
+<script>
+function playSong() {
+	let audio = document.getElementById("song");
+	audio.currentTime = 0;
+
+    audio.play();
+}
+</script>

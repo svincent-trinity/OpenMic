@@ -20,4 +20,16 @@ class Application @Inject()(cc: ControllerComponents) extends AbstractController
   	Ok(views.html.home())
   }
 
+  def publicLobby = Action {
+  	Ok(views.html.publicLobby())
+  }
+
+  def recordings = Action {
+  	Ok(views.html.recordings())
+  }
+
+  def editProfile = Action {
+  	Ok(views.html.editProfile())
+  }
+
 }

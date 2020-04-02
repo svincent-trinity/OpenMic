@@ -6,6 +6,9 @@
 GET        /                             controllers.Application.index
 GET        /login                        controllers.Application.login
 GET        /home                         controllers.Application.home
+GET        /lobby                        controllers.Application.publicLobby
+GET        /recordings                   controllers.Application.recordings
+GET        /editProfile                  controllers.Application.editProfile
 
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)
