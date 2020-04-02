@@ -1,6 +1,4 @@
-# play-scalajs-slink
+A Midi-handling website built in Scala Play.
 
-This is my starter project for things that involve Play using Scala.js and
-the Slinky React binding. I'm using this as the starter for student code in
-Web Apps Spring 2020.
-
+To run, make sure you have sbt installed. Then, enter "sbt run" in the command line.
+You will find the application at localhost:9000.
