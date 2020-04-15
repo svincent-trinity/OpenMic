@@ -1,17 +1,36 @@
-@()
+@(loginForm: Form[LoginData])(implicit request: MessagesRequestHeader, flash: Flash)
+
+@main("Login") {
 
 <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
 
 <h2>Login:</h2>
-<br>
-Username: <input type="text" id="loginName">
-<br>
-Password: <input type="password" id="loginPass">
-<br>
-<a href="@routes.Application.home" name="loginButton">Login</a>
+	<form method="post" action="/validatePost1">
+	   @helper.CSRF.formField
+       Username: <input type="text" name="username" id="username-login"></input>
+       <br>
+       Password: <input type="password" name="password" id="password-login"></input>
+       <br>
+       <input type="submit"></input>
+	</form>
 
+	    <h1>Register User</h1>
+	<form method="post" action="@routes.Application.createUser()">
+	   @helper.CSRF.formField
 
+       <!--Username: <input type="text" name="username"></input>
+       <br>
+       Password: <input type="password" name="password"></input>
+       <br>
+       <input type="submit"></input>-->
+       @helper.inputText(loginForm("Username"))
+	   @helper.inputText(loginForm("Password"))
+	   <div class="form-actions">
+	   	<button type="submit">Login</button>
+	   </div>
+	</form>
 
+}
 <!--<h2>Create User</h2>
 <br>
 Username: <input type="text" id="createName">

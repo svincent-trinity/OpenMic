@@ -13,3 +13,10 @@ GET        /editProfile                  controllers.Application.editProfile
 # Prefix must match `play.assets.urlPrefix`
 GET        /assets/*file                 controllers.Assets.at(file)
 GET        /versionedAssets/*file        controllers.Assets.versioned(path="/public", file: Asset)
+
+
+#logins using post
+POST       /validatePost1                controllers.Application.validateLoginPost
+POST       /validateForm1                controllers.Application.validateLoginForm
+
+POST       /createUser1                  controllers.Application.createUser
