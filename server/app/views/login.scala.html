@@ -25,6 +25,7 @@
        <input type="submit"></input>-->
        @helper.inputText(loginForm("Username"))
 	   @helper.inputText(loginForm("Password"))
+	   @helper.select(loginForm("Privacy"), Seq[(String, String)](("Private", "Private"), ("Public", "Public")))
 	   <div class="form-actions">
 	   	<button type="submit">Login</button>
 	   </div>

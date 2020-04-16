@@ -1,10 +1,11 @@
-@(currUser: String)(implicit request: RequestHeader, flash: Flash)
+@(currUser: String, userPrivacy: String)(implicit request: RequestHeader, flash: Flash)
 
 
 
 <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
 
-<h1>Welcome, Sam</h1>
+<h1>Welcome, @currUser</h1>
 <h2>Edit Your Profile</h2>
-
+<h3>Your privacy setting:</h3>
+<div>@userPrivacy</div>
 <a href="@routes.Application.home" name="loginButton">Home</a>

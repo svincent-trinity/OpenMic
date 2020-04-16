@@ -9,14 +9,15 @@ import models.UserManager
 import play.api.data._
 import play.api.data.Forms._
 
-case class LoginData(username: String, password: String)
+case class LoginData(username: String, password: String, privacy: String)
 
 
 @Singleton
 class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAbstractController(cc) {
   val loginForm = Form(mapping(
      "Username" -> text(3,10),
-     "Password" -> text(8)
+     "Password" -> text(8),
+     "Privacy"  -> text(5)
 
     )(LoginData.apply)(LoginData.unapply))
 
@@ -24,6 +25,10 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
     Ok(views.html.login(loginForm))
   }
 
+
+    def logout = Action {
+        Redirect(routes.Application.login()).withNewSession
+    }
 
   def index = Action { implicit request =>
           val usernameOption = request.session.get("username")
@@ -65,8 +70,8 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
 
       val usernameOption = request.session.get("username")
         usernameOption.map { username =>
-
-        Ok(views.html.home(username))
+        val allUsers = UserManager.getUsers()
+        Ok(views.html.home(username, allUsers))
         }.getOrElse(Redirect(routes.Application.login()))
   }
 
@@ -90,7 +95,7 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
       val usernameOption = request.session.get("username")
         usernameOption.map { username =>
 
-        Ok(views.html.editProfile(username))
+        Ok(views.html.editProfile(username, UserManager.showPrivacy(username)))
         }.getOrElse(Redirect(routes.Application.login()))
   }
 
@@ -100,7 +105,7 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
         loginForm.bindFromRequest.fold(
             formWithErrors => BadRequest(views.html.login(formWithErrors)),
             ld => 
-                if(UserManager.createUser(ld.username, ld.password)) {
+                if(UserManager.createUser(ld.username, ld.password, ld.privacy)) {
                     Redirect(routes.Application.home()).withSession("username" -> ld.username)
                 } else {
                     Redirect(routes.Application.home()).flashing("error" -> "Invalid username/password combination, bud")
