@@ -20,3 +20,4 @@ POST       /validatePost1                controllers.Application.validateLoginPo
 POST       /validateForm1                controllers.Application.validateLoginForm
 
 POST       /createUser1                  controllers.Application.createUser
+POST       /createProject                controllers.Application.createProject

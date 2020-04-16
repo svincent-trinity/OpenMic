@@ -1,4 +1,4 @@
-@(currUser: String)(implicit request: RequestHeader, flash: Flash)
+@(currUser: String, currProj: String)(implicit request: RequestHeader, flash: Flash)
 
 
 @main("Play Midi") {
@@ -10,8 +10,8 @@
   </ul>
 -->
 <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
-<h1>Sam's Project</h1>
-
+<h1>@currUser's Project</h1>
+<h2>Project name: @currProj</h2>
   <h2>Initiated Midi Playback</h2>
   <!--<div style="background-image: url('@routes.Assets.versioned("images/DAWPic.png")');">-->
   <img src="@routes.Assets.versioned("images/DAWPic.png")" alt="DAWPicture">

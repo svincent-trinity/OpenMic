@@ -1,15 +1,44 @@
-@(currUser: String, allUsers: Iterable[String])(implicit request: RequestHeader, flash: Flash)
+@import collection.mutable.ArrayBuffer
 
+@(currUser: String, allUsers: Iterable[String], projects: ArrayBuffer[String], projectData: Form[ProjectData])(implicit request: MessagesRequestHeader, flash: Flash)
+@main("OpenMic") {
 <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
 <h1>Welcome, @currUser</h1>
-<h2>New session</h2>
-<a href="@routes.Application.index" name="loginButton">Open new project</a>
 
-<br>
-<h2>Your sessions</h2>
-<a href="@routes.Application.index" name="loginButton">Open your project: Untitled (last modified 4/1/2020)</a>
-<br>
-<a href="@routes.Application.index" name="loginButton">Open your project: Gartosis (last modified 3/26/2020)</a>
+
+<h2>Your Projects:</h2>
+<form method="post" action="@routes.Application.createProject()">
+	@helper.CSRF.formField
+
+<table>
+    @if(projects.length == 0) {
+    <tr><td>You have no projects! Want to start one?</td></tr>
+} else {
+	@for(i <- projects) {
+	<tr>
+		<td><a href="@routes.Application.index()" name="loginButton">@i</a></td>
+    </tr>
+    }
+    <tr>
+    }
+    	<td>
+    			   <div hidden>@helper.inputText(projectData("Username"), Symbol("placeholder") -> currUser)</div>
+
+
+
+	   @helper.inputText(projectData("Name"), Symbol("placeholder") -> "Enter a cool name")
+    	</td>
+
+<td class="form-actions">
+	   	<button type="submit">Create New Project</button>
+	   </td>
+	   </tr>
+
+
+	   </table>
+
+	</form>
+
 
 <br>
 <h2>Open public sessions</h2>
@@ -25,3 +54,4 @@
 
 <br>
 
+}

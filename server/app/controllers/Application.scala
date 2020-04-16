@@ -11,6 +11,8 @@ import play.api.data.Forms._
 
 case class LoginData(username: String, password: String, privacy: String)
 
+case class ProjectData(user: String, name: String)//, midiNotes: String)
+
 
 @Singleton
 class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAbstractController(cc) {
@@ -20,6 +22,12 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
      "Privacy"  -> text(5)
 
     )(LoginData.apply)(LoginData.unapply))
+
+  val createProjectForm = Form(mapping(
+    "Username" -> text,
+    "Name" -> nonEmptyText,
+    //"MidiNotes" -> text
+  )(ProjectData.apply)(ProjectData.unapply))
 
   def login = Action { implicit request =>
     Ok(views.html.login(loginForm))
@@ -34,7 +42,7 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
           val usernameOption = request.session.get("username")
         usernameOption.map { username =>
 
-        Ok(views.html.index(username))
+        Ok(views.html.index(username, "No current project selected"))
         }.getOrElse(Redirect(routes.Application.login()))
   }
 
@@ -54,6 +62,7 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
 
     def validateLoginForm = Action { implicit request =>
         loginForm.bindFromRequest.fold(
+
             formWithErrors => BadRequest(views.html.login(formWithErrors)),
             ld => 
                 if(UserManager.validateUser(ld.username, ld.password)) {
@@ -71,7 +80,8 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
       val usernameOption = request.session.get("username")
         usernameOption.map { username =>
         val allUsers = UserManager.getUsers()
-        Ok(views.html.home(username, allUsers))
+        val projects = UserManager.getProjects(username)
+        Ok(views.html.home(username, allUsers, projects, createProjectForm))
         }.getOrElse(Redirect(routes.Application.login()))
   }
 
@@ -114,6 +124,28 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
 
     }
 
+    def createProject = Action { implicit request =>
+                //binding
+        createProjectForm.bindFromRequest.fold(
 
+            formWithErrors => {
+                val usernameOption = request.session.get("username")
+                usernameOption.map { username =>
+                val allUsers = UserManager.getUsers()
+                val projects = UserManager.getProjects(username)
+                BadRequest(views.html.home(username, allUsers, projects, formWithErrors))
+                }.getOrElse(Redirect(routes.Application.login()))},
+            ld => {
+                val usernameOption = request.session.get("username")
+                usernameOption.map { username =>
+                if(UserManager.createProject(username, ld.name)) {
+                  Ok(views.html.index(username, ld.name))
+                } else {
+                    Redirect(routes.Application.home()).flashing("error" -> "Invalid username/password combination, bud")
+                }
+              }.getOrElse(Redirect(routes.Application.home()).flashing("error" -> "Something went wrong"))
+              }
+        )
+    }
 
 }
