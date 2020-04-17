@@ -62,13 +62,35 @@ object UserManager {
                 retArray :+ i
             }
             return retArray*/
-            retArray = e
+            val tmpArray = e
+
+            for(i <- tmpArray) {
+            	val tmp = i.split("####")
+                retArray += tmp(0)
+            }
             //var ret = e
             return retArray.drop(2)
         }).getOrElse(retArray)
         //return retArray
     }
 
+    def getPublicProjectNames():ArrayBuffer[String] = {
+    	var ret = ArrayBuffer[String]()
+    	for(user <- getUsers) {
+            users.get(user).map(e => {
+	            val tmpArray = e
+
+	            for(i <- tmpArray) {
+	            	val tmp = i.split("####")
+	            	if(tmp.length > 1 && tmp(1) == "Public") {
+	                    ret += (user ++ "####" ++tmp(0))
+	                }
+	            }
+            }).getOrElse(ret)
+        
+    	}
+    	return ret
+    }
 	
 
 }

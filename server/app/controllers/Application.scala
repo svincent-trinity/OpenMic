@@ -11,7 +11,7 @@ import play.api.data.Forms._
 
 case class LoginData(username: String, password: String, privacy: String)
 
-case class ProjectData(user: String, name: String)//, midiNotes: String)
+case class ProjectData(user: String, name: String, privacy: String)//, midiNotes: String)
 
 
 @Singleton
@@ -26,6 +26,7 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
   val createProjectForm = Form(mapping(
     "Username" -> text,
     "Name" -> nonEmptyText,
+    "Privacy" -> text
     //"MidiNotes" -> text
   )(ProjectData.apply)(ProjectData.unapply))
 
@@ -88,8 +89,8 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
   def publicLobby = Action { implicit request =>
       val usernameOption = request.session.get("username")
         usernameOption.map { username =>
-
-        Ok(views.html.publicLobby(username))
+        val publicSessions = UserManager.getPublicProjectNames()
+        Ok(views.html.publicLobby(username, publicSessions))
         }.getOrElse(Redirect(routes.Application.login()))
   }
 
@@ -138,7 +139,7 @@ class Application @Inject()(cc: MessagesControllerComponents) extends MessagesAb
             ld => {
                 val usernameOption = request.session.get("username")
                 usernameOption.map { username =>
-                if(UserManager.createProject(username, ld.name)) {
+                if(UserManager.createProject(username, ld.name + "####" + ld.privacy)) {
                   Ok(views.html.index(username, ld.name))
                 } else {
                     Redirect(routes.Application.home()).flashing("error" -> "Invalid username/password combination, bud")

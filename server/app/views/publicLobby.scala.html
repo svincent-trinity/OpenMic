@@ -1,17 +1,18 @@
-@(currUser: String)(implicit request: RequestHeader, flash: Flash)
+@import collection.mutable.ArrayBuffer
+
+
+@(currUser: String, publicProjects: ArrayBuffer[String])(implicit request: RequestHeader, flash: Flash)
 
 <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
 
 
 <h1>Public Sessions in Progress:</h1>
-<a href="@routes.Application.index" name="loginButton">User504's Session</a>
-<br>
-<a href="@routes.Application.index" name="loginButton">User163's Session</a>
-<br>
-<a href="@routes.Application.index" name="loginButton">User777's Session</a>
-<br>
-<a href="@routes.Application.index" name="loginButton">Sam's Session</a>
-<br>
+@for(i <- publicProjects) {
+    
+	<a href="@routes.Application.index" name="loginButton">@i.split("####")(1): @i.split("####")(0)'s Project</a>
+	<br>
+}
+
 
 
 

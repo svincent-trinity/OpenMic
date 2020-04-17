@@ -17,6 +17,7 @@
 	@for(i <- projects) {
 	<tr>
 		<td><a href="@routes.Application.index()" name="loginButton">@i</a></td>
+
     </tr>
     }
     <tr>
@@ -27,6 +28,10 @@
 
 
 	   @helper.inputText(projectData("Name"), Symbol("placeholder") -> "Enter a cool name")
+    	</td>
+    	<td>
+    		@helper.select(projectData("Privacy"), Seq[(String, String)](("Private", "Private"), ("Public", "Public")))
+
     	</td>
 
 <td class="form-actions">
@@ -42,7 +47,7 @@
 
 <br>
 <h2>Open public sessions</h2>
-<a href="@routes.Application.publicLobby" name="loginButton">View public projects (4 open)</a>
+<a href="@routes.Application.publicLobby" name="loginButton">View public projects</a>
 
 <br>
 <h2>Recordings</h2>
