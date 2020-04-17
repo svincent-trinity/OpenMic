@@ -122,6 +122,19 @@ function getMIDIMessage(midiMessage) {
     }*/
 }
 
+function getMIDIMessageArray(messageArray) {
+	if(messageArray[0] == 144) {
+		console.log("You played note " + messageArray[1]);
+    	noteInput.value = messageArray[1];
+    	playBackArray.push(noteInput.value);
+    	currTime = new Date();
+    	console.log(currTime.getTime() - start);
+    	playBackArray.push(currTime.getTime() - start);
+    	playNote(noteInput.value, true);
+    	console.log(playBackArray);
+	}
+}
+
 function playNote(noteIn, onOrOff) {
 	if(noteIn == 48) {
         stopAudio(kick);

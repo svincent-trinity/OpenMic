@@ -315,8 +315,17 @@ function spacebarToggle() {
     drawBoard()
     for(let i = 0; i < indexesOfReds.length; i++) {
       drawGridElement(indexesOfReds[i][0], indexesOfReds[i][1], true)
-      if(rectanglesY[indexesOfReds[i][1]]-lastPos < 2 && rectanglesY[indexesOfReds[i][1]]-lastPos>-1) {
-        console.log(rectanglesY[indexesOfReds[i][1]])
+      if(rectanglesX[indexesOfReds[i][0]]-lastPos < 2 && rectanglesX[indexesOfReds[i][0]]-lastPos>-1) {
+        console.log("At location" + rectanglesY[indexesOfReds[i][1]])
+        let indexLocation = 350
+        let midiStart = 60
+        while (indexLocation >= 28) {
+        if(rectanglesY[indexesOfReds[i][1]] == indexLocation) {
+        getMIDIMessageArray([144, midiStart, 64])
+        }
+        indexLocation -= 14
+        midiStart += 1;
+      }
         //playNote(48, true)
       }
     }
