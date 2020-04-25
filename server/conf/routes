@@ -21,3 +21,19 @@ POST       /validateForm1                controllers.Application.validateLoginFo
 
 POST       /createUser1                  controllers.Application.createUser
 POST       /createProject                controllers.Application.createProject
+
+
+
+#Routes for version 5
+GET        /load5            controllers.ReactApp.load
+POST       /validate5        controllers.ReactApp.validate
+GET        /taskList5        controllers.ReactApp.projectsList
+GET        /publicsList5     controllers.ReactApp.publicProjectsList
+POST       /addTask5         controllers.ReactApp.addProject
+POST       /addPublic5       controllers.ReactApp.addPublicProject
+
+POST       /deleteTask5      controllers.ReactApp.delete
+POST       /create5          controllers.ReactApp.createUser
+GET        /logout5          controllers.ReactApp.logout
+GET        /getUsers5        controllers.ReactApp.getUsers
+#GET        /userbysong       controllers.ReactApp.getUserIdBySongId

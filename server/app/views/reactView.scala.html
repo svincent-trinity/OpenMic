@@ -1,0 +1,23 @@
+@()(implicit request: RequestHeader, flash: Flash)
+
+@main("OpenMic"){
+<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+
+	<input type="hidden" id="csrfToken" value="@helper.CSRF.getToken.value">
+    <input type="hidden" id="validateRoute" value="@routes.ReactApp.validate()">
+    <input type="hidden" id="tasksRoute" value="@routes.ReactApp.projectsList()">
+    <input type="hidden" id="publicsRoute" value="@routes.ReactApp.publicProjectsList()">
+    <input type="hidden" id="addRoute" value="@routes.ReactApp.addProject()">
+    <input type="hidden" id="pubRoute" value="@routes.ReactApp.addPublicProject()">
+    <input type="hidden" id="deleteRoute" value="@routes.ReactApp.delete()">
+    <input type="hidden" id="createRoute" value="@routes.ReactApp.createUser()">
+    <input type="hidden" id="logoutRoute" value="@routes.ReactApp.logout()">
+    <input type="hidden" id="usersRoute" value="@routes.ReactApp.getUsers()">
+    <input type="hidden" id="getUserRoute" value="routes.ReactApp.getUserIdBySongId()">
+
+	<div id="react-root"></div>
+        <canvas id="sequencerCanvas" width="800" height="400"></canvas>
+<script src="@routes.Assets.versioned("javascript/canvasHandler.js")"></script>
+	<script src="@routes.Assets.versioned("javascript/reactStuff.js")"></script>
+
+}
