@@ -7,6 +7,8 @@ import scala.concurrent.Future
 import org.mindrot.jbcrypt.BCrypt
 import scala.concurrent.duration.Duration
 
+
+
 class UserProjectsDatabaseModel(db: Database)(implicit ec: ExecutionContext) {
 
 
@@ -97,8 +99,28 @@ class UserProjectsDatabaseModel(db: Database)(implicit ec: ExecutionContext) {
                 user.username
             }).result
         )
+
     }
 
+    def getRecordings(): Future[Seq[RecordingData]] = {
+        db.run(
+            (for {
+                recording <- Recordings if recording.privacy === "Public"
+            } yield {
+                recording
+            }).result
+        ).map(recs => recs.map(rec => RecordingData(rec.recordingId, rec.name, rec.description)))
+    }
+
+    def getRecAudio(recId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                recording <- Recordings if recording.recordingId === recId
+            } yield {
+                recording.audio
+            }).result
+        )
+    }
     /*def createPublicProjects(username: String, message: String): Future[Int] = {
         db.run(Items += ItemsRow(-1, 2, message + " (sent by: " + username + ")"))
 
@@ -111,6 +133,11 @@ class UserProjectsDatabaseModel(db: Database)(implicit ec: ExecutionContext) {
         
         
 	}
+
+    def uploadResource(filename: String, file: Array[Byte], userid: Int): Future[Int] = {
+        //val userId = scala.concurrent.Await.result(getIdByUsername(username), Duration(10000, "millis"))
+        db.run(Recordings += RecordingsRow(-1, userid, filename, "Test", "Public", file))
+    }
 
 
 	def removeProject(itemId: Int): Future[Boolean] = {

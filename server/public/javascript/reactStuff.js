@@ -12,10 +12,16 @@ const pubRoute = document.getElementById("pubRoute").value;
 const logoutRoute = document.getElementById("logoutRoute").value;
 const usersRoute = document.getElementById("usersRoute").value;
 const getUserRoute = document.getElementById("getUserRoute").value;
+const recordingsList = document.getElementById("recordingsList").value;
+const playRecording = document.getElementById("playSong").value;
 
+
+let sessionUsername = "";
 
 const canv = document.getElementById("sequencerCanvas");
 canv.style.display = "none"
+const uploadDiv = document.getElementById("file_upload");
+uploadDiv.style.display = "none"
 
 class OpenMicMainComponent extends React.Component {
   constructor(props) {
@@ -29,7 +35,7 @@ class OpenMicMainComponent extends React.Component {
     if(this.state.loggedIn) {
       if(this.state.pageOn == "home") {
         console.log("home")
-        return ce(HomePageComponent, { goToProject: () => this.setState( {pageOn: "project"} ), goToPublic: () => this.setState( {pageOn: "public"} ), doLogout: () => this.setState( {loggedIn: false, pageOn: "home"})});
+        return ce(HomePageComponent, { goToRecordings: () => this.setState( {pageOn: "recordings"} ), goToProject: () => this.setState( {pageOn: "project"} ), goToPublic: () => this.setState( {pageOn: "public"} ), doLogout: () => this.setState( {loggedIn: false, pageOn: "home"})});
       } else if (this.state.pageOn == "public") {
         console.log("public")
         return ce(PublicPageComponent, { goToProject: () => this.setState( {pageOn: "project"} ), goToHome: () => this.setState( {pageOn: "home"} ), doLogout: () => this.setState( {loggedIn: false, pageOn: "home"})});
@@ -37,6 +43,10 @@ class OpenMicMainComponent extends React.Component {
       } else if (this.state.pageOn == "project") {
         console.log("project")
         return ce(ProjectPageComponent, { goToHome: () => this.setState( {pageOn: "home"} ), doLogout: () => this.setState( {loggedIn: false, pageOn: "home"})});
+
+      }else if (this.state.pageOn == "recordings") {
+        console.log("recordings")
+        return ce(RecordingsPageComponent, { goToHome: () => this.setState( {pageOn: "home"} ), doLogout: () => this.setState( {loggedIn: false, pageOn: "home"})});
 
       }
     } else {
@@ -85,7 +95,9 @@ class LoginComponent extends React.Component {
 	);
 	}
 
-
+  runUsername() {
+    sessionUsername = this.state.loginName;
+  }
 	changeHandler(e) {
     this.setState({ [e.target['id']]: e.target.value });
 	}
@@ -93,6 +105,7 @@ class LoginComponent extends React.Component {
   login(e) {
   const username = this.state.loginName;
   const password = this.state.loginPass;
+  this.runUsername();
   fetch(validateRoute, {
     method: 'POST',
     headers: {'Content-Type': 'application/json', 'Csrf-Token': csrfToken },
@@ -143,6 +156,7 @@ class HomePageComponent extends React.Component {
   render() {
     return ce('div', null, 
       'OpenMic',
+      ce('h2', null, 'Welcome, ' + sessionUsername + "!"),
       ce('h2', null, 'My Projects'),
       ce('br'),
       ce('table', null, 
@@ -168,6 +182,9 @@ class HomePageComponent extends React.Component {
       ce('br'),
 
       ce('button', {onClick: e => this.props.goToPublic()}, 'Enter Public Lobby'),
+      ce('button', {onClick: e => this.props.goToRecordings()}, 'See Recording Feed'),
+      ce('button', {onClick: e => this.props.goToRecordings()}, 'Instrument Workshop'),
+
 
       ce('br'),
       ce('button', { onClick: e => this.props.doLogout() }, 'Log out')
@@ -376,6 +393,74 @@ class ProjectPageComponent extends React.Component {
 
   homePressed(e) {
     canv.style.display = "none"
+    this.props.goToHome()
+  }
+
+}
+
+class RecordingsPageComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      recordings: []
+    };
+  }
+
+  componentDidMount() {
+    this.loadRecordings();
+  }
+  render() {
+    uploadDiv.style.display = "block"
+
+
+    return ce('div', null, 
+      'Recording Feed',
+            ce('table', null, 
+        ce('thead', null, ce('tr', null, ce('th', null, "Recording Name"), ce('th', null, "Description"))),
+          ce('tbody', null, this.state.recordings.map(rec => ce('tr', { key: rec.id, onClick: e => this.playSong(rec.id) }, ce('td', null, rec.name), ce('td', null, rec.description))
+            )
+            )
+          ),
+
+      
+      ce('h2', null, 'Upload a Recording'),
+      //ce('button', { onClick: e => this.homePressed(e) }, 'Upload a recording'),
+
+      ce('button', { onClick: e => this.homePressed(e) }, 'Home')
+      );
+  }
+
+  loadRecordings() {
+    fetch(recordingsList).then(res => res.json()).then(recordings => this.setState({ recordings }));
+
+  }
+  
+  playSong(id) {
+    console.log("song " + id + " is playing")
+    //Get song by id here
+    fetch(playRecording, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Csrf-Token': csrfToken },
+        body: JSON.stringify(id)//)
+    }).then(res => res.json()).then(data => {
+        if(data) {
+          var song =  document.createElement("AUDIO");
+          song.setAttribute("src", "@routes.Assets.versioned('tmp/audio.mp3')")
+          song.setAttribute("controls", "controls");
+          document.body.appendChild(song);
+        } else {
+                     //TODO
+          console.log("Error: Could not play song")
+          //this.setState({ taskMessage: "Failed to delete" })
+        } 
+    });
+
+    //Play song:
+
+  }
+
+  homePressed(e) {
+    uploadDiv.style.display = "none"
     this.props.goToHome()
   }
 

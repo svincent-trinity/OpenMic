@@ -14,7 +14,7 @@ trait Tables {
   import slick.jdbc.{GetResult => GR}
 
   /** DDL for all tables. Call .create to execute. */
-  lazy val schema: profile.SchemaDescription = Items.schema ++ Users.schema
+  lazy val schema: profile.SchemaDescription = Items.schema ++ Recordings.schema ++ Users.schema
   @deprecated("Use .schema instead of .ddl", "3.0")
   def ddl = schema
 
@@ -52,6 +52,44 @@ trait Tables {
   }
   /** Collection-like TableQuery object for table Items */
   lazy val Items = new TableQuery(tag => new Items(tag))
+
+  /** Entity class storing rows of table Recordings
+   *  @param recordingId Database column recording_id SqlType(serial), AutoInc, PrimaryKey
+   *  @param userId Database column user_id SqlType(int4)
+   *  @param name Database column name SqlType(varchar), Length(256,true)
+   *  @param description Database column description SqlType(varchar), Length(2000,true)
+   *  @param privacy Database column privacy SqlType(varchar), Length(7,true)
+   *  @param audio Database column audio SqlType(bytea) */
+  case class RecordingsRow(recordingId: Int, userId: Int, name: String, description: String, privacy: String, audio: Array[Byte])
+  /** GetResult implicit for fetching RecordingsRow objects using plain SQL queries */
+  implicit def GetResultRecordingsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Array[Byte]]): GR[RecordingsRow] = GR{
+    prs => import prs._
+    RecordingsRow.tupled((<<[Int], <<[Int], <<[String], <<[String], <<[String], <<[Array[Byte]]))
+  }
+  /** Table description of table recordings. Objects of this class serve as prototypes for rows in queries. */
+  class Recordings(_tableTag: Tag) extends profile.api.Table[RecordingsRow](_tableTag, "recordings") {
+    def * = (recordingId, userId, name, description, privacy, audio) <> (RecordingsRow.tupled, RecordingsRow.unapply)
+    /** Maps whole row to an option. Useful for outer joins. */
+    def ? = ((Rep.Some(recordingId), Rep.Some(userId), Rep.Some(name), Rep.Some(description), Rep.Some(privacy), Rep.Some(audio))).shaped.<>({r=>import r._; _1.map(_=> RecordingsRow.tupled((_1.get, _2.get, _3.get, _4.get, _5.get, _6.get)))}, (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+
+    /** Database column recording_id SqlType(serial), AutoInc, PrimaryKey */
+    val recordingId: Rep[Int] = column[Int]("recording_id", O.AutoInc, O.PrimaryKey)
+    /** Database column user_id SqlType(int4) */
+    val userId: Rep[Int] = column[Int]("user_id")
+    /** Database column name SqlType(varchar), Length(256,true) */
+    val name: Rep[String] = column[String]("name", O.Length(256,varying=true))
+    /** Database column description SqlType(varchar), Length(2000,true) */
+    val description: Rep[String] = column[String]("description", O.Length(2000,varying=true))
+    /** Database column privacy SqlType(varchar), Length(7,true) */
+    val privacy: Rep[String] = column[String]("privacy", O.Length(7,varying=true))
+    /** Database column audio SqlType(bytea) */
+    val audio: Rep[Array[Byte]] = column[Array[Byte]]("audio")
+
+    /** Foreign key referencing Users (database name recordings_user_id_fkey) */
+    lazy val usersFk = foreignKey("recordings_user_id_fkey", userId, Users)(r => r.id, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)
+  }
+  /** Collection-like TableQuery object for table Recordings */
+  lazy val Recordings = new TableQuery(tag => new Recordings(tag))
 
   /** Entity class storing rows of table Users
    *  @param id Database column id SqlType(serial), AutoInc, PrimaryKey

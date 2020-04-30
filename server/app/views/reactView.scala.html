@@ -14,9 +14,26 @@
     <input type="hidden" id="logoutRoute" value="@routes.ReactApp.logout()">
     <input type="hidden" id="usersRoute" value="@routes.ReactApp.getUsers()">
     <input type="hidden" id="getUserRoute" value="routes.ReactApp.getUserIdBySongId()">
+    <input type="hidden" id="recordingsList" value="@routes.ReactApp.recordingsList()">
+    <input type="hidden" id="playSong" value="@routes.ReactApp.playRecording()">
 
-	<div id="react-root"></div>
-        <canvas id="sequencerCanvas" width="800" height="400"></canvas>
+	<div id="react-root">
+
+
+
+
+    </div>
+    <canvas id="sequencerCanvas" width="800" height="400"></canvas>
+          <div id="file_upload">
+        @helper.form(action = routes.ReactApp.upload, Symbol("enctype") -> "multipart/form-data") {
+          @helper.CSRF.formField
+          <input type="file" name="picture">
+          <p>
+            <input type="submit">
+          </p>
+        }
+       </div>
+
 <script src="@routes.Assets.versioned("javascript/canvasHandler.js")"></script>
 	<script src="@routes.Assets.versioned("javascript/reactStuff.js")"></script>
 
