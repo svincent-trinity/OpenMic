@@ -402,7 +402,8 @@ class RecordingsPageComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      recordings: []
+      recordings: [],
+      hasSong: false
     };
   }
 
@@ -441,13 +442,19 @@ class RecordingsPageComponent extends React.Component {
     fetch(playRecording, {
         method: 'POST',
         headers: {'Content-Type': 'application/json', 'Csrf-Token': csrfToken },
-        body: JSON.stringify(id)//)
+        body: JSON.stringify(id.toString())
     }).then(res => res.json()).then(data => {
         if(data) {
-          var song =  document.createElement("AUDIO");
-          song.setAttribute("src", "@routes.Assets.versioned('tmp/audio.mp3')")
+          if(this.hasSong) {
+            document.getElementById("tmpMaker").style.display="none";
+          }
+          var song = document.createElement("AUDIO");
+          song.setAttribute("src", document.getElementById("filePath").value)
           song.setAttribute("controls", "controls");
+          song.setAttribute("id", "tmpMaker");
           document.body.appendChild(song);
+          this.setState( { hasSong: true } );
+          console.log("yay")
         } else {
                      //TODO
           console.log("Error: Could not play song")
@@ -461,6 +468,7 @@ class RecordingsPageComponent extends React.Component {
 
   homePressed(e) {
     uploadDiv.style.display = "none"
+    this.setState( { hasSong: false } );
     this.props.goToHome()
   }
 

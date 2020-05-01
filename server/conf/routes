@@ -38,7 +38,7 @@ POST       /create5          controllers.ReactApp.createUser
 GET        /logout5          controllers.ReactApp.logout
 GET        /getUsers5        controllers.ReactApp.getUsers
 #GET        /userbysong       controllers.ReactApp.getUserIdBySongId
-GET        /playRecording    controllers.ReactApp.playRecording
+POST        /playRecording    controllers.ReactApp.playRecording
 
 POST       /upload           controllers.ReactApp.upload
 

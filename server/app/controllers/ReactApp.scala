@@ -25,6 +25,7 @@ import java.io.File;
 import java.nio.file.Files;
 import java.io.FileOutputStream; 
 import java.io.OutputStream; 
+import java.io.PrintWriter
 
 
 
@@ -121,23 +122,16 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
 
     }
 
-    def loadAudio(id: Int)(implicit request: Request[AnyContent]) = {
-        val bytes = scala.concurrent.Await.result(model.getRecAudio(id), Duration(30000, "millis"))
-        var filePath = "@routes.Assets.versioned/tmp/audio.mp3"
+    def loadAudio(id: Int)(implicit request: Request[AnyContent]): Boolean = {
+        val bytes = scala.concurrent.Await.result(model.getRecAudio(id), Duration(50000, "millis"))
+        var filePath:String = Paths.get("server/public/tmp/audio.mp3").toString()
         var file = new File(filePath)
         val os = new FileOutputStream(file)
         os.write(bytes(0))
         os.close()
-
-
+        return true
     }
 
-    def playRecording = Action.async { implicit request =>
-        withJsonBody[String] { songId =>
-            loadAudio(songId.toInt)
-            Future.successful(Ok(Json.toJson("Complete.")))
-        }
-    }
 
     def projectsList = Action.async { implicit request => 
         withSessionUsername { username =>
@@ -186,6 +180,28 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
             }
         }
     }
+    def playRecording = Action.async { implicit request =>
+        println("Playing rec")
+        withJsonBody[String] { songId =>
+            println(songId)
+            val b = loadAudio(songId.toInt)
+            if(b) Future.successful(Ok(Json.toJson(true)))
+            else Future.successful(Ok(Json.toJson(false)))
+        }
+
+        /*request.body.asJson.map {body => 
+            Json.fromJson[String](body) match {
+                case JsSuccess(a, path) => {
+                    println(body)
+                    loadAudio(body.toInt)
+                    Future.successful(Ok(Json.toJson(true)))            
+                }
+                case e @ JsError(_) => Future.successful(Redirect(routes.ReactApp.load()))
+            }
+         }.getOrElse(Future.successful(Redirect(routes.ReactApp.load())))*/
+
+    }
+
 
     def upload = Action(parse.multipartFormData) { implicit request =>
 
