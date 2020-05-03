@@ -26,42 +26,42 @@ trait Tables {
    *  @param name Database column name SqlType(varchar), Length(256,true)
    *  @param description Database column description SqlType(varchar), Length(2000,true)
    *  @param privacy Database column privacy SqlType(varchar), Length(7,true)
-   *  @param c4 Database column c4 SqlType(bytea), Default(None)
-   *  @param db4 Database column db4 SqlType(bytea), Default(None)
-   *  @param d4 Database column d4 SqlType(bytea), Default(None)
-   *  @param eb4 Database column eb4 SqlType(bytea), Default(None)
-   *  @param e4 Database column e4 SqlType(bytea), Default(None)
-   *  @param f4 Database column f4 SqlType(bytea), Default(None)
-   *  @param gb4 Database column gb4 SqlType(bytea), Default(None)
-   *  @param g4 Database column g4 SqlType(bytea), Default(None)
-   *  @param ab4 Database column ab4 SqlType(bytea), Default(None)
-   *  @param a4 Database column a4 SqlType(bytea), Default(None)
-   *  @param bb4 Database column bb4 SqlType(bytea), Default(None)
-   *  @param b4 Database column b4 SqlType(bytea), Default(None)
-   *  @param c5 Database column c5 SqlType(bytea), Default(None)
-   *  @param db5 Database column db5 SqlType(bytea), Default(None)
-   *  @param d5 Database column d5 SqlType(bytea), Default(None)
-   *  @param eb5 Database column eb5 SqlType(bytea), Default(None)
-   *  @param e5 Database column e5 SqlType(bytea), Default(None)
-   *  @param f5 Database column f5 SqlType(bytea), Default(None)
-   *  @param gb5 Database column gb5 SqlType(bytea), Default(None)
-   *  @param g5 Database column g5 SqlType(bytea), Default(None)
-   *  @param ab5 Database column ab5 SqlType(bytea), Default(None)
-   *  @param a5 Database column a5 SqlType(bytea), Default(None)
-   *  @param bb5 Database column bb5 SqlType(bytea), Default(None)
-   *  @param b5 Database column b5 SqlType(bytea), Default(None)
-   *  @param c6 Database column c6 SqlType(bytea), Default(None) */
-  case class InstrumentsRow(instrumentId: Int, userId: Int, name: String, description: String, privacy: String, c4: Option[Array[Byte]] = None, db4: Option[Array[Byte]] = None, d4: Option[Array[Byte]] = None, eb4: Option[Array[Byte]] = None, e4: Option[Array[Byte]] = None, f4: Option[Array[Byte]] = None, gb4: Option[Array[Byte]] = None, g4: Option[Array[Byte]] = None, ab4: Option[Array[Byte]] = None, a4: Option[Array[Byte]] = None, bb4: Option[Array[Byte]] = None, b4: Option[Array[Byte]] = None, c5: Option[Array[Byte]] = None, db5: Option[Array[Byte]] = None, d5: Option[Array[Byte]] = None, eb5: Option[Array[Byte]] = None, e5: Option[Array[Byte]] = None, f5: Option[Array[Byte]] = None, gb5: Option[Array[Byte]] = None, g5: Option[Array[Byte]] = None, ab5: Option[Array[Byte]] = None, a5: Option[Array[Byte]] = None, bb5: Option[Array[Byte]] = None, b5: Option[Array[Byte]] = None, c6: Option[Array[Byte]] = None)
+   *  @param c4 Database column c4 SqlType(bytea)
+   *  @param db4 Database column db4 SqlType(bytea)
+   *  @param d4 Database column d4 SqlType(bytea)
+   *  @param eb4 Database column eb4 SqlType(bytea)
+   *  @param e4 Database column e4 SqlType(bytea)
+   *  @param f4 Database column f4 SqlType(bytea)
+   *  @param gb4 Database column gb4 SqlType(bytea)
+   *  @param g4 Database column g4 SqlType(bytea)
+   *  @param ab4 Database column ab4 SqlType(bytea)
+   *  @param a4 Database column a4 SqlType(bytea)
+   *  @param bb4 Database column bb4 SqlType(bytea)
+   *  @param b4 Database column b4 SqlType(bytea)
+   *  @param c5 Database column c5 SqlType(bytea)
+   *  @param db5 Database column db5 SqlType(bytea)
+   *  @param d5 Database column d5 SqlType(bytea)
+   *  @param eb5 Database column eb5 SqlType(bytea)
+   *  @param e5 Database column e5 SqlType(bytea)
+   *  @param f5 Database column f5 SqlType(bytea)
+   *  @param gb5 Database column gb5 SqlType(bytea)
+   *  @param g5 Database column g5 SqlType(bytea)
+   *  @param ab5 Database column ab5 SqlType(bytea)
+   *  @param a5 Database column a5 SqlType(bytea)
+   *  @param bb5 Database column bb5 SqlType(bytea)
+   *  @param b5 Database column b5 SqlType(bytea)
+   *  @param c6 Database column c6 SqlType(bytea) */
+  case class InstrumentsRow(instrumentId: Int, userId: Int, name: String, description: String, privacy: String, c4: Array[Byte], db4: Array[Byte], d4: Array[Byte], eb4: Array[Byte], e4: Array[Byte], f4: Array[Byte], gb4: Array[Byte], g4: Array[Byte], ab4: Array[Byte], a4: Array[Byte], bb4: Array[Byte], b4: Array[Byte], c5: Array[Byte], db5: Array[Byte], d5: Array[Byte], eb5: Array[Byte], e5: Array[Byte], f5: Array[Byte], gb5: Array[Byte], g5: Array[Byte], ab5: Array[Byte], a5: Array[Byte], bb5: Array[Byte], b5: Array[Byte], c6: Array[Byte])
   /** GetResult implicit for fetching InstrumentsRow objects using plain SQL queries */
-  implicit def GetResultInstrumentsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Option[Array[Byte]]]): GR[InstrumentsRow] = GR{
+  implicit def GetResultInstrumentsRow(implicit e0: GR[Int], e1: GR[String], e2: GR[Array[Byte]]): GR[InstrumentsRow] = GR{
     prs => import prs._
-    InstrumentsRow(<<[Int], <<[Int], <<[String], <<[String], <<[String], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]], <<?[Array[Byte]])
+    InstrumentsRow(<<[Int], <<[Int], <<[String], <<[String], <<[String], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]], <<[Array[Byte]])
   }
   /** Table description of table instruments. Objects of this class serve as prototypes for rows in queries. */
   class Instruments(_tableTag: Tag) extends profile.api.Table[InstrumentsRow](_tableTag, "instruments") {
     def * = (instrumentId :: userId :: name :: description :: privacy :: c4 :: db4 :: d4 :: eb4 :: e4 :: f4 :: gb4 :: g4 :: ab4 :: a4 :: bb4 :: b4 :: c5 :: db5 :: d5 :: eb5 :: e5 :: f5 :: gb5 :: g5 :: ab5 :: a5 :: bb5 :: b5 :: c6 :: HNil).mapTo[InstrumentsRow]
     /** Maps whole row to an option. Useful for outer joins. */
-    def ? = (Rep.Some(instrumentId) :: Rep.Some(userId) :: Rep.Some(name) :: Rep.Some(description) :: Rep.Some(privacy) :: c4 :: db4 :: d4 :: eb4 :: e4 :: f4 :: gb4 :: g4 :: ab4 :: a4 :: bb4 :: b4 :: c5 :: db5 :: d5 :: eb5 :: e5 :: f5 :: gb5 :: g5 :: ab5 :: a5 :: bb5 :: b5 :: c6 :: HNil).shaped.<>(r => InstrumentsRow(r(0).asInstanceOf[Option[Int]].get, r(1).asInstanceOf[Option[Int]].get, r(2).asInstanceOf[Option[String]].get, r(3).asInstanceOf[Option[String]].get, r(4).asInstanceOf[Option[String]].get, r(5).asInstanceOf[Option[Array[Byte]]], r(6).asInstanceOf[Option[Array[Byte]]], r(7).asInstanceOf[Option[Array[Byte]]], r(8).asInstanceOf[Option[Array[Byte]]], r(9).asInstanceOf[Option[Array[Byte]]], r(10).asInstanceOf[Option[Array[Byte]]], r(11).asInstanceOf[Option[Array[Byte]]], r(12).asInstanceOf[Option[Array[Byte]]], r(13).asInstanceOf[Option[Array[Byte]]], r(14).asInstanceOf[Option[Array[Byte]]], r(15).asInstanceOf[Option[Array[Byte]]], r(16).asInstanceOf[Option[Array[Byte]]], r(17).asInstanceOf[Option[Array[Byte]]], r(18).asInstanceOf[Option[Array[Byte]]], r(19).asInstanceOf[Option[Array[Byte]]], r(20).asInstanceOf[Option[Array[Byte]]], r(21).asInstanceOf[Option[Array[Byte]]], r(22).asInstanceOf[Option[Array[Byte]]], r(23).asInstanceOf[Option[Array[Byte]]], r(24).asInstanceOf[Option[Array[Byte]]], r(25).asInstanceOf[Option[Array[Byte]]], r(26).asInstanceOf[Option[Array[Byte]]], r(27).asInstanceOf[Option[Array[Byte]]], r(28).asInstanceOf[Option[Array[Byte]]], r(29).asInstanceOf[Option[Array[Byte]]]), (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
+    def ? = (Rep.Some(instrumentId) :: Rep.Some(userId) :: Rep.Some(name) :: Rep.Some(description) :: Rep.Some(privacy) :: Rep.Some(c4) :: Rep.Some(db4) :: Rep.Some(d4) :: Rep.Some(eb4) :: Rep.Some(e4) :: Rep.Some(f4) :: Rep.Some(gb4) :: Rep.Some(g4) :: Rep.Some(ab4) :: Rep.Some(a4) :: Rep.Some(bb4) :: Rep.Some(b4) :: Rep.Some(c5) :: Rep.Some(db5) :: Rep.Some(d5) :: Rep.Some(eb5) :: Rep.Some(e5) :: Rep.Some(f5) :: Rep.Some(gb5) :: Rep.Some(g5) :: Rep.Some(ab5) :: Rep.Some(a5) :: Rep.Some(bb5) :: Rep.Some(b5) :: Rep.Some(c6) :: HNil).shaped.<>(r => InstrumentsRow(r(0).asInstanceOf[Option[Int]].get, r(1).asInstanceOf[Option[Int]].get, r(2).asInstanceOf[Option[String]].get, r(3).asInstanceOf[Option[String]].get, r(4).asInstanceOf[Option[String]].get, r(5).asInstanceOf[Option[Array[Byte]]].get, r(6).asInstanceOf[Option[Array[Byte]]].get, r(7).asInstanceOf[Option[Array[Byte]]].get, r(8).asInstanceOf[Option[Array[Byte]]].get, r(9).asInstanceOf[Option[Array[Byte]]].get, r(10).asInstanceOf[Option[Array[Byte]]].get, r(11).asInstanceOf[Option[Array[Byte]]].get, r(12).asInstanceOf[Option[Array[Byte]]].get, r(13).asInstanceOf[Option[Array[Byte]]].get, r(14).asInstanceOf[Option[Array[Byte]]].get, r(15).asInstanceOf[Option[Array[Byte]]].get, r(16).asInstanceOf[Option[Array[Byte]]].get, r(17).asInstanceOf[Option[Array[Byte]]].get, r(18).asInstanceOf[Option[Array[Byte]]].get, r(19).asInstanceOf[Option[Array[Byte]]].get, r(20).asInstanceOf[Option[Array[Byte]]].get, r(21).asInstanceOf[Option[Array[Byte]]].get, r(22).asInstanceOf[Option[Array[Byte]]].get, r(23).asInstanceOf[Option[Array[Byte]]].get, r(24).asInstanceOf[Option[Array[Byte]]].get, r(25).asInstanceOf[Option[Array[Byte]]].get, r(26).asInstanceOf[Option[Array[Byte]]].get, r(27).asInstanceOf[Option[Array[Byte]]].get, r(28).asInstanceOf[Option[Array[Byte]]].get, r(29).asInstanceOf[Option[Array[Byte]]].get), (_:Any) =>  throw new Exception("Inserting into ? projection not supported."))
 
     /** Database column instrument_id SqlType(serial), AutoInc, PrimaryKey */
     val instrumentId: Rep[Int] = column[Int]("instrument_id", O.AutoInc, O.PrimaryKey)
@@ -73,56 +73,56 @@ trait Tables {
     val description: Rep[String] = column[String]("description", O.Length(2000,varying=true))
     /** Database column privacy SqlType(varchar), Length(7,true) */
     val privacy: Rep[String] = column[String]("privacy", O.Length(7,varying=true))
-    /** Database column c4 SqlType(bytea), Default(None) */
-    val c4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("c4", O.Default(None))
-    /** Database column db4 SqlType(bytea), Default(None) */
-    val db4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("db4", O.Default(None))
-    /** Database column d4 SqlType(bytea), Default(None) */
-    val d4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("d4", O.Default(None))
-    /** Database column eb4 SqlType(bytea), Default(None) */
-    val eb4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("eb4", O.Default(None))
-    /** Database column e4 SqlType(bytea), Default(None) */
-    val e4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("e4", O.Default(None))
-    /** Database column f4 SqlType(bytea), Default(None) */
-    val f4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("f4", O.Default(None))
-    /** Database column gb4 SqlType(bytea), Default(None) */
-    val gb4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("gb4", O.Default(None))
-    /** Database column g4 SqlType(bytea), Default(None) */
-    val g4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("g4", O.Default(None))
-    /** Database column ab4 SqlType(bytea), Default(None) */
-    val ab4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("ab4", O.Default(None))
-    /** Database column a4 SqlType(bytea), Default(None) */
-    val a4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("a4", O.Default(None))
-    /** Database column bb4 SqlType(bytea), Default(None) */
-    val bb4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("bb4", O.Default(None))
-    /** Database column b4 SqlType(bytea), Default(None) */
-    val b4: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("b4", O.Default(None))
-    /** Database column c5 SqlType(bytea), Default(None) */
-    val c5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("c5", O.Default(None))
-    /** Database column db5 SqlType(bytea), Default(None) */
-    val db5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("db5", O.Default(None))
-    /** Database column d5 SqlType(bytea), Default(None) */
-    val d5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("d5", O.Default(None))
-    /** Database column eb5 SqlType(bytea), Default(None) */
-    val eb5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("eb5", O.Default(None))
-    /** Database column e5 SqlType(bytea), Default(None) */
-    val e5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("e5", O.Default(None))
-    /** Database column f5 SqlType(bytea), Default(None) */
-    val f5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("f5", O.Default(None))
-    /** Database column gb5 SqlType(bytea), Default(None) */
-    val gb5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("gb5", O.Default(None))
-    /** Database column g5 SqlType(bytea), Default(None) */
-    val g5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("g5", O.Default(None))
-    /** Database column ab5 SqlType(bytea), Default(None) */
-    val ab5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("ab5", O.Default(None))
-    /** Database column a5 SqlType(bytea), Default(None) */
-    val a5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("a5", O.Default(None))
-    /** Database column bb5 SqlType(bytea), Default(None) */
-    val bb5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("bb5", O.Default(None))
-    /** Database column b5 SqlType(bytea), Default(None) */
-    val b5: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("b5", O.Default(None))
-    /** Database column c6 SqlType(bytea), Default(None) */
-    val c6: Rep[Option[Array[Byte]]] = column[Option[Array[Byte]]]("c6", O.Default(None))
+    /** Database column c4 SqlType(bytea) */
+    val c4: Rep[Array[Byte]] = column[Array[Byte]]("c4")
+    /** Database column db4 SqlType(bytea) */
+    val db4: Rep[Array[Byte]] = column[Array[Byte]]("db4")
+    /** Database column d4 SqlType(bytea) */
+    val d4: Rep[Array[Byte]] = column[Array[Byte]]("d4")
+    /** Database column eb4 SqlType(bytea) */
+    val eb4: Rep[Array[Byte]] = column[Array[Byte]]("eb4")
+    /** Database column e4 SqlType(bytea) */
+    val e4: Rep[Array[Byte]] = column[Array[Byte]]("e4")
+    /** Database column f4 SqlType(bytea) */
+    val f4: Rep[Array[Byte]] = column[Array[Byte]]("f4")
+    /** Database column gb4 SqlType(bytea) */
+    val gb4: Rep[Array[Byte]] = column[Array[Byte]]("gb4")
+    /** Database column g4 SqlType(bytea) */
+    val g4: Rep[Array[Byte]] = column[Array[Byte]]("g4")
+    /** Database column ab4 SqlType(bytea) */
+    val ab4: Rep[Array[Byte]] = column[Array[Byte]]("ab4")
+    /** Database column a4 SqlType(bytea) */
+    val a4: Rep[Array[Byte]] = column[Array[Byte]]("a4")
+    /** Database column bb4 SqlType(bytea) */
+    val bb4: Rep[Array[Byte]] = column[Array[Byte]]("bb4")
+    /** Database column b4 SqlType(bytea) */
+    val b4: Rep[Array[Byte]] = column[Array[Byte]]("b4")
+    /** Database column c5 SqlType(bytea) */
+    val c5: Rep[Array[Byte]] = column[Array[Byte]]("c5")
+    /** Database column db5 SqlType(bytea) */
+    val db5: Rep[Array[Byte]] = column[Array[Byte]]("db5")
+    /** Database column d5 SqlType(bytea) */
+    val d5: Rep[Array[Byte]] = column[Array[Byte]]("d5")
+    /** Database column eb5 SqlType(bytea) */
+    val eb5: Rep[Array[Byte]] = column[Array[Byte]]("eb5")
+    /** Database column e5 SqlType(bytea) */
+    val e5: Rep[Array[Byte]] = column[Array[Byte]]("e5")
+    /** Database column f5 SqlType(bytea) */
+    val f5: Rep[Array[Byte]] = column[Array[Byte]]("f5")
+    /** Database column gb5 SqlType(bytea) */
+    val gb5: Rep[Array[Byte]] = column[Array[Byte]]("gb5")
+    /** Database column g5 SqlType(bytea) */
+    val g5: Rep[Array[Byte]] = column[Array[Byte]]("g5")
+    /** Database column ab5 SqlType(bytea) */
+    val ab5: Rep[Array[Byte]] = column[Array[Byte]]("ab5")
+    /** Database column a5 SqlType(bytea) */
+    val a5: Rep[Array[Byte]] = column[Array[Byte]]("a5")
+    /** Database column bb5 SqlType(bytea) */
+    val bb5: Rep[Array[Byte]] = column[Array[Byte]]("bb5")
+    /** Database column b5 SqlType(bytea) */
+    val b5: Rep[Array[Byte]] = column[Array[Byte]]("b5")
+    /** Database column c6 SqlType(bytea) */
+    val c6: Rep[Array[Byte]] = column[Array[Byte]]("c6")
 
     /** Foreign key referencing Users (database name instruments_user_id_fkey) */
     lazy val usersFk = foreignKey("instruments_user_id_fkey", userId :: HNil, Users)(r => r.id :: HNil, onUpdate=ForeignKeyAction.NoAction, onDelete=ForeignKeyAction.Cascade)

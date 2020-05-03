@@ -1,4 +1,4 @@
-@()(implicit request: RequestHeader, flash: Flash)
+@(instrumentForm: Form[InstrumentData])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @main("OpenMic"){
 <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
@@ -40,10 +40,40 @@
     <div id="instrument_upload">
         @helper.form(action = routes.ReactApp.instrumentUpload, Symbol("enctype") -> "multipart/form-data") {
           @helper.CSRF.formField
-          <input type="text" name="instrumentName" placeholder="Instrument Name">
-          <br>
-          <input type="file" name="picture">
-          <text>Note:</text>
+
+          @helper.inputText(instrumentForm("instrumentName"))
+          @helper.inputText(instrumentForm("userid"))
+          @helper.inputText(instrumentForm("description"))
+
+          @helper.select(instrumentForm("Privacy"), Seq[(String, String)](("Private", "Private"), ("Public", "Public")))
+          <input type="file" name="C4"> <text>Assigned to Note: C4</text>
+          <input type="file" name="Db4"> <text>Assigned to Note: Db4</text>
+          <input type="file" name="D4"> <text>Assigned to Note: D4</text>
+          <input type="file" name="Eb4"> <text>Assigned to Note: Eb4</text>
+          <input type="file" name="E4"> <text>Assigned to Note: E4</text>
+          <input type="file" name="F4"> <text>Assigned to Note: F4</text>
+          <input type="file" name="Gb4"> <text>Assigned to Note: Gb4</text>
+          <input type="file" name="G4"> <text>Assigned to Note: G4</text>
+          <input type="file" name="Ab4"> <text>Assigned to Note: Ab4</text>
+          <input type="file" name="A4"> <text>Assigned to Note: A4</text>
+          <input type="file" name="Bb4"> <text>Assigned to Note: Bb4</text>
+          <input type="file" name="B4"> <text>Assigned to Note: B4</text>
+          <input type="file" name="C5"> <text>Assigned to Note: C5</text>
+          <input type="file" name="Db5"> <text>Assigned to Note: Db5</text>
+          <input type="file" name="D5"> <text>Assigned to Note: D5</text>
+          <input type="file" name="Eb5"> <text>Assigned to Note: Eb5</text>
+          <input type="file" name="E5"> <text>Assigned to Note: E5</text>
+          <input type="file" name="F5"> <text>Assigned to Note: F5</text>
+          <input type="file" name="Gb5"> <text>Assigned to Note: Gb5</text>
+          <input type="file" name="G5"> <text>Assigned to Note: G5</text>
+          <input type="file" name="Ab5"> <text>Assigned to Note: Ab5</text>
+          <input type="file" name="A5"> <text>Assigned to Note: A5</text>
+          <input type="file" name="Bb5"> <text>Assigned to Note: Bb5</text>
+          <input type="file" name="B5"> <text>Assigned to Note: B5</text>
+          <input type="file" name="C6"> <text>Assigned to Note: C6</text>
+
+
+          <!--<text>Note:</text>
           <select name="noteOptions">
             <option value="C4">C4</option>
             <option value="Db4">Db4</option>
@@ -70,7 +100,7 @@
             <option value="Bb5">Bb5</option>
             <option value="B5">B5</option>
             <option value="C6">C6</option>
-          </select>
+          </select>-->
           <!--<button>+ Add Note</button>-->
 
           <p>

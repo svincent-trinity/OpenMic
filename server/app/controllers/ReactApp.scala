@@ -9,6 +9,7 @@ import play.api.libs.json._
 import models._
 import play.api.data._
 import play.api.data.Forms._
+import scala.collection.mutable.ArrayBuffer
 
 
 import play.api.db.slick.DatabaseConfigProvider
@@ -31,15 +32,27 @@ import java.io.PrintWriter
 
 
 @Singleton
-class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider, cc: ControllerComponents)(implicit ec: ExecutionContext)
-  extends AbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
+class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider, cc: MessagesControllerComponents)(implicit ec: ExecutionContext)
+  extends MessagesAbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
 
     private val model = new UserProjectsDatabaseModel(db)
+
+    val instrumentForm = Form(mapping(
+     "id" -> number,
+     "userid" -> text,
+     "instrumentName" -> text(1),
+     "description" -> text(0),
+
+     "privacy"  -> text(5)
+
+    )(InstrumentData.apply)(InstrumentData.unapply))
+
+
 
     def load = Action.async { implicit request =>
         println("React App Loading")
 
-        Future.successful(Ok(views.html.reactView()))
+        Future.successful(Ok(views.html.reactView(instrumentForm)))
     }
 
     implicit val userDataReads = Json.reads[UserData]
@@ -232,30 +245,55 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
 
 
     def instrumentUpload = Action(parse.multipartFormData) { implicit request =>
+      val instrums = Array("C4", "Db4", "D4", "Eb4", "E4", "F4", "Gb4", "G4", "Ab4", "A4", "Bb4", "B4", "C5", "Db5", "D5", "Eb5", "E5", "F5", "Gb5", "G5", "Ab5", "A5", "Bb5", "B5", "C6")
+      var finBytes = ArrayBuffer[Array[Byte]]()
+      instrums.foreach(elem =>
+          request.body
+            .file(elem)
+            .map { picture =>
+              // only get the last part of the filename
+              // otherwise someone can send a path like ../../home/foo/bar.txt to write to other files on the system
+              val filename    = Paths.get(picture.filename).getFileName
+              val fileSize    = picture.fileSize
+              println(fileSize.toString())
+              //println(Paths.get(picture.ref.file.getAbsolutePath))
+              val contentType = picture.contentType
+              //val fileContent = Files.readAllBytes(filename);
+              val fileBytes = Files.readAllBytes(Paths.get(picture.ref.file.getAbsolutePath))
+              finBytes += fileBytes
+              //model.uploadResource(filename.toString, fileBytes, 3).map(added => Ok(Json.toJson("File uploaded")))
+              //picture.ref.copyTo(Paths.get(s"/tmp/picture/$filename"), replace = true)
+              //Ok(Json.toJson("Recording uploaded"))
 
-      request.body
-        .file("picture")
-        .map { picture =>
-          // only get the last part of the filename
-          // otherwise someone can send a path like ../../home/foo/bar.txt to write to other files on the system
-          val filename    = Paths.get(picture.filename).getFileName
-          val fileSize    = picture.fileSize
-          println(fileSize.toString())
-          //println(Paths.get(picture.ref.file.getAbsolutePath))
-          val contentType = picture.contentType
-          //val fileContent = Files.readAllBytes(filename);
-          val fileBytes = Files.readAllBytes(Paths.get(picture.ref.file.getAbsolutePath))
+            }
+            .getOrElse {
+              finBytes += Files.readAllBytes(Paths.get("server/public/sounds/emptyAudio.mp3"))
+              //Ok(Json.toJson("File not uploaded"))
+            }
+      )
+      //println(finBytes(0))
+      var instrumentName = ""
+      var userid = ""
+      var privacy = ""
+      var description = ""
 
-          model.uploadResource(filename.toString, fileBytes, 3).map(added => Ok(Json.toJson("File uploaded")))
-          //picture.ref.copyTo(Paths.get(s"/tmp/picture/$filename"), replace = true)
-          Ok(Json.toJson("Recording uploaded"))
+      val postVals = request.body.asFormUrlEncoded
+      postVals.map { args =>
+        println(args)
+        println(args._2(0))
+        println(args._1)
+        //println(args._2(0)(0))
+        if(args._1 == "instrumentName") instrumentName = args._2(0)
+        if(args._1 == "userid") userid = args._2(0)
+        if(args._1 == "Privacy") privacy = args._2(0)
+        if(args._1 == "description") description = args._2(0)
 
-        }
-        .getOrElse {
+        
+        //Ok(Json.toJson(true))    
+      }//.getOrElse(Redirect(routes.ReactApp.load5()))
+      model.uploadInstrument(instrumentName, userid.toInt, privacy, description, finBytes(0), finBytes(1), finBytes(2), finBytes(3), finBytes(4), finBytes(5), finBytes(6), finBytes(7), finBytes(8), finBytes(9), finBytes(10), finBytes(11), finBytes(12), finBytes(13), finBytes(14), finBytes(15), finBytes(16), finBytes(17), finBytes(18), finBytes(19), finBytes(20), finBytes(21), finBytes(22), finBytes(23), finBytes(24))
 
-          Ok(Json.toJson("File not uploaded"))
-        }
-    
+      Ok(Json.toJson(true))
     }
 
 

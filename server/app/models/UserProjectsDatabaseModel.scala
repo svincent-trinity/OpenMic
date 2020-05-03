@@ -6,6 +6,7 @@ import models.Tables._
 import scala.concurrent.Future
 import org.mindrot.jbcrypt.BCrypt
 import scala.concurrent.duration.Duration
+import scala.Option
 
 
 
@@ -112,6 +113,17 @@ class UserProjectsDatabaseModel(db: Database)(implicit ec: ExecutionContext) {
         ).map(recs => recs.map(rec => RecordingData(rec.recordingId, rec.name, rec.description)))
     }
 
+    def getInstruments(): Future[Seq[InstrumentData]] = {
+        db.run(
+            (for {
+                instrument <- Instruments
+            } yield{
+                instrument
+            }).result
+        ).map(insts => insts.map(inst => InstrumentData(inst.instrumentId, inst.userId.toString, inst.name, inst.description, inst.privacy)))
+        
+    }
+
     def getRecAudio(recId: Int): Future[Seq[Array[Byte]]] = {
         db.run(
             (for {
@@ -139,9 +151,9 @@ class UserProjectsDatabaseModel(db: Database)(implicit ec: ExecutionContext) {
         db.run(Recordings += RecordingsRow(-1, userid, filename, "Test", "Public", file))
     }
 
-    def uploadInstrument(filename: String, file: Array[Byte], userid: Int, noteToUpload: String): Future[Int] = {
+    def uploadInstrument(instrumentName: String, userid: Int, privacy: String, description: String, C4: Array[Byte], Db4: Array[Byte], D4: Array[Byte], Eb4: Array[Byte], E4: Array[Byte], F4: Array[Byte], Gb4: Array[Byte], G4: Array[Byte], Ab4: Array[Byte], A4: Array[Byte], Bb4: Array[Byte], B4: Array[Byte], C5: Array[Byte], Db5: Array[Byte], D5: Array[Byte], Eb5: Array[Byte], E5: Array[Byte], F5: Array[Byte], Gb5: Array[Byte], G5: Array[Byte], Ab5: Array[Byte], A5: Array[Byte], Bb5: Array[Byte], B5: Array[Byte], C6: Array[Byte]): Future[Int] = {
         //val userId = scala.concurrent.Await.result(getIdByUsername(username), Duration(10000, "millis"))
-        db.run(Instruments += InstrumentsRow(-1, userid, filename, "Test", "Public"))
+        db.run(Instruments += InstrumentsRow(-1, userid, instrumentName, description, privacy, C4, Db4, D4, Eb4, E4, F4, Gb4, G4, Ab4, A4, Bb4, B4, C5, Db5, D5, Eb5, E5, F5, Gb5, G5, Ab5, A5, Bb5, B5, C6))//files(13), files(14), files(15), files(16), files(17), files(18), files(19), files(20), files(21), files(22), files(23), files(24)))
     }
 
 	def removeProject(itemId: Int): Future[Boolean] = {
