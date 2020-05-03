@@ -139,6 +139,10 @@ class UserProjectsDatabaseModel(db: Database)(implicit ec: ExecutionContext) {
         db.run(Recordings += RecordingsRow(-1, userid, filename, "Test", "Public", file))
     }
 
+    def uploadInstrument(filename: String, file: Array[Byte], userid: Int, noteToUpload: String): Future[Int] = {
+        //val userId = scala.concurrent.Await.result(getIdByUsername(username), Duration(10000, "millis"))
+        db.run(Instruments += InstrumentsRow(-1, userid, filename, "Test", "Public"))
+    }
 
 	def removeProject(itemId: Int): Future[Boolean] = {
 	    db.run( Items.filter(_.itemId === itemId).delete ).map(count => count > 0)

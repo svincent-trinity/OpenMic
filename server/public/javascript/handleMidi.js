@@ -8,13 +8,13 @@ let playBackArray = [];
 
 let noteInput = document.getElementById("notePlayed");
 
-let kick = document.getElementById("kick");
+/*let kick = document.getElementById("kick");
 let snare = document.getElementById("snare");
 let hihat = document.getElementById("hihat");
 let ride = document.getElementById("ride");
 let stick = document.getElementById("stick-hit");
 let crash = document.getElementById("crash");
-
+*/
 let C4 = document.getElementById("C4");
 let Db4 = document.getElementById("Db4");
 let D4 = document.getElementById("D4");

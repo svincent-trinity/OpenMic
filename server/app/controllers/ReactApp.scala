@@ -124,7 +124,7 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
 
     def loadAudio(id: Int)(implicit request: Request[AnyContent]): Boolean = {
         val bytes = scala.concurrent.Await.result(model.getRecAudio(id), Duration(50000, "millis"))
-        var filePath:String = Paths.get("server/public/tmp/audio.mp3").toString()
+        var filePath:String = Paths.get("server/public/audioSource/audio.mp3").toString()
         var file = new File(filePath)
         val os = new FileOutputStream(file)
         os.write(bytes(0))
@@ -230,6 +230,33 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
     
     }
 
+
+    def instrumentUpload = Action(parse.multipartFormData) { implicit request =>
+
+      request.body
+        .file("picture")
+        .map { picture =>
+          // only get the last part of the filename
+          // otherwise someone can send a path like ../../home/foo/bar.txt to write to other files on the system
+          val filename    = Paths.get(picture.filename).getFileName
+          val fileSize    = picture.fileSize
+          println(fileSize.toString())
+          //println(Paths.get(picture.ref.file.getAbsolutePath))
+          val contentType = picture.contentType
+          //val fileContent = Files.readAllBytes(filename);
+          val fileBytes = Files.readAllBytes(Paths.get(picture.ref.file.getAbsolutePath))
+
+          model.uploadResource(filename.toString, fileBytes, 3).map(added => Ok(Json.toJson("File uploaded")))
+          //picture.ref.copyTo(Paths.get(s"/tmp/picture/$filename"), replace = true)
+          Ok(Json.toJson("Recording uploaded"))
+
+        }
+        .getOrElse {
+
+          Ok(Json.toJson("File not uploaded"))
+        }
+    
+    }
 
 
     def logout = TODO /*Action { implicit request =>

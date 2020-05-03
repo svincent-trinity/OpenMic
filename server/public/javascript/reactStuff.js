@@ -23,6 +23,10 @@ canv.style.display = "none"
 const uploadDiv = document.getElementById("file_upload");
 uploadDiv.style.display = "none"
 
+const uploadInstrumentDiv = document.getElementById("instrument_upload");
+uploadInstrumentDiv.style.display = "none"
+
+
 class OpenMicMainComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -35,7 +39,7 @@ class OpenMicMainComponent extends React.Component {
     if(this.state.loggedIn) {
       if(this.state.pageOn == "home") {
         console.log("home")
-        return ce(HomePageComponent, { goToRecordings: () => this.setState( {pageOn: "recordings"} ), goToProject: () => this.setState( {pageOn: "project"} ), goToPublic: () => this.setState( {pageOn: "public"} ), doLogout: () => this.setState( {loggedIn: false, pageOn: "home"})});
+        return ce(HomePageComponent, { goToInstruments: () => this.setState( {pageOn: "instruments"} ), goToRecordings: () => this.setState( {pageOn: "recordings"} ), goToProject: () => this.setState( {pageOn: "project"} ), goToPublic: () => this.setState( {pageOn: "public"} ), doLogout: () => this.setState( {loggedIn: false, pageOn: "home"})});
       } else if (this.state.pageOn == "public") {
         console.log("public")
         return ce(PublicPageComponent, { goToProject: () => this.setState( {pageOn: "project"} ), goToHome: () => this.setState( {pageOn: "home"} ), doLogout: () => this.setState( {loggedIn: false, pageOn: "home"})});
@@ -47,6 +51,10 @@ class OpenMicMainComponent extends React.Component {
       }else if (this.state.pageOn == "recordings") {
         console.log("recordings")
         return ce(RecordingsPageComponent, { goToHome: () => this.setState( {pageOn: "home"} ), doLogout: () => this.setState( {loggedIn: false, pageOn: "home"})});
+
+      }else if (this.state.pageOn == "instruments") {
+        console.log("instruments")
+        return ce(InstrumentsPageComponent, { goToHome: () => this.setState( {pageOn: "home"} ), doLogout: () => this.setState( {loggedIn: false, pageOn: "home"})});
 
       }
     } else {
@@ -183,7 +191,7 @@ class HomePageComponent extends React.Component {
 
       ce('button', {onClick: e => this.props.goToPublic()}, 'Enter Public Lobby'),
       ce('button', {onClick: e => this.props.goToRecordings()}, 'See Recording Feed'),
-      ce('button', {onClick: e => this.props.goToRecordings()}, 'Instrument Workshop'),
+      ce('button', {onClick: e => this.props.goToInstruments()}, 'Instrument Workshop'),
 
 
       ce('br'),
@@ -398,6 +406,53 @@ class ProjectPageComponent extends React.Component {
 
 }
 
+class InstrumentsPageComponent extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      instruments: []
+    };
+  }
+
+  componentDidMount() {
+
+  }
+
+  render() {
+    uploadInstrumentDiv.style.display = "block"
+
+
+    return ce('div', null, 
+      'Instruments Workshop',
+            ce('table', null, 
+        ce('thead', null, ce('tr', null, ce('th', null, "Instrument Name"), ce('th', null, "Owner"))),
+          ce('tbody', null, this.state.instruments.map(inst => ce('tr', { key: inst.id, onClick: e => this.playSong(inst.id) }, ce('td', null, inst.name), ce('td', null, inst.description))
+            )
+            )
+          ),
+
+      
+      //ce('button', { onClick: e => this.homePressed(e) }, 'Upload a recording'),
+
+      ce('button', { onClick: e => this.homePressed(e) }, 'Home'),
+      ce('h2', null, 'Upload an instrument')
+
+      );
+  }
+
+  loadInstruments() {
+    console.log("Loading instruments")
+  }
+
+  homePressed(e) {
+    uploadInstrumentDiv.style.display = "none"
+    this.props.goToHome()
+  }
+
+  
+
+}
+
 class RecordingsPageComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -424,10 +479,11 @@ class RecordingsPageComponent extends React.Component {
           ),
 
       
-      ce('h2', null, 'Upload a Recording'),
       //ce('button', { onClick: e => this.homePressed(e) }, 'Upload a recording'),
 
-      ce('button', { onClick: e => this.homePressed(e) }, 'Home')
+      ce('button', { onClick: e => this.homePressed(e) }, 'Home'),
+      ce('h2', null, 'Upload a Recording')
+
       );
   }
 

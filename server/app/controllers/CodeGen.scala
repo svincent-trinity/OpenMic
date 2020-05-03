@@ -5,7 +5,7 @@ object CodeGen extends App {
     "slick.jdbc.PostgresProfile", 
     "org.postgresql.Driver",
     "jdbc:postgresql://localhost/openmic?user=samvincent&password=password",
-    "/Users/samvincent/Desktop/FinProj/iAudition/server/app/",
+    "/Users/samvincent/Desktop/FinPro/iAudition/server/app/",
     "models", None, None, true, false
   )
 }

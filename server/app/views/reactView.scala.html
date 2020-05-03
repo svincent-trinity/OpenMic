@@ -16,7 +16,7 @@
     <input type="hidden" id="getUserRoute" value="routes.ReactApp.getUserIdBySongId()">
     <input type="hidden" id="recordingsList" value="@routes.ReactApp.recordingsList()">
     <input type="hidden" id="playSong" value="@routes.ReactApp.playRecording()">
-    <input type="hidden" id="filePath" value="@routes.Assets.versioned("tmp/audio.mp3")">
+    <input type="hidden" id="filePath" value="@routes.Assets.versioned("audioSource/audio.mp3")">
 
 
 	<div id="react-root">
@@ -26,17 +26,159 @@
 
     </div>
     <canvas id="sequencerCanvas" width="800" height="400"></canvas>
-          <div id="file_upload">
+    <div id="file_upload">
         @helper.form(action = routes.ReactApp.upload, Symbol("enctype") -> "multipart/form-data") {
           @helper.CSRF.formField
           <input type="file" name="picture">
+
           <p>
             <input type="submit">
           </p>
         }
-       </div>
+    </div>
+
+    <div id="instrument_upload">
+        @helper.form(action = routes.ReactApp.instrumentUpload, Symbol("enctype") -> "multipart/form-data") {
+          @helper.CSRF.formField
+          <input type="text" name="instrumentName" placeholder="Instrument Name">
+          <br>
+          <input type="file" name="picture">
+          <text>Note:</text>
+          <select name="noteOptions">
+            <option value="C4">C4</option>
+            <option value="Db4">Db4</option>
+            <option value="D4">D4</option>
+            <option value="Eb4">Eb4</option>
+            <option value="E4">E4</option>
+            <option value="F4">F4</option>
+            <option value="Gb4">Gb4</option>
+            <option value="G4">G4</option>
+            <option value="Ab4">Ab4</option>
+            <option value="A4">A4</option>
+            <option value="Bb4">Bb4</option>
+            <option value="B4">B4</option>
+            <option value="C5">C5</option>
+            <option value="Db5">Db5</option>
+            <option value="D5">D5</option>
+            <option value="Eb5">Eb5</option>
+            <option value="E5">E5</option>
+            <option value="F5">F5</option>
+            <option value="Gb5">Gb5</option>
+            <option value="G5">G5</option>
+            <option value="Ab5">Ab5</option>
+            <option value="A5">A5</option>
+            <option value="Bb5">Bb5</option>
+            <option value="B5">B5</option>
+            <option value="C6">C6</option>
+          </select>
+          <!--<button>+ Add Note</button>-->
+
+          <p>
+            <input type="submit">
+          </p>
+        }
+    </div>
+
+<!--Audio sources for loading instruments-->
+
+  <audio id = "C4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/C4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "Db4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/Db4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "D4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/D4.mp3")" type="audio/mpeg">
+  </audio>
+
+
+  <audio id = "Eb4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/Eb4.mp3")" type="audio/mpeg">
+  </audio>
+
+ <audio id = "E4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/E4.mp3")" type="audio/mpeg">
+  </audio>
+  <audio id = "F4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/F4.mp3")" type="audio/mpeg">
+  </audio>
+
+
+  <audio id = "Gb4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/Gb4.mp3")" type="audio/mpeg">
+  </audio>
+
+
+  <audio id = "G4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/G4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "Ab4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/Ab4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "A4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/A4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "Bb4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/Bb4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "B4">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/B4.mp3")" type="audio/mpeg">
+  </audio>
+
+  <audio id = "C5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/C5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "Db5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/Db5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "D5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/D5.mp3")" type="audio/mpeg">
+  </audio>
+
+    <audio id = "Eb5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/Eb5.mp3")" type="audio/mpeg">
+  </audio>
+      <audio id = "E5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/E5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "F5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/F5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "F#5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/Gb5.mp3")" type="audio/mpeg">
+  </audio>
+
+    <audio id = "G5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/G5.mp3")" type="audio/mpeg">
+  </audio>
+      <audio id = "Ab5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/Ab5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "A5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/A5.mp3")" type="audio/mpeg">
+  </audio>
+
+    <audio id = "Bb5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/Bb5.mp3")" type="audio/mpeg">
+  </audio>
+      <audio id = "B5">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/B5.mp3")" type="audio/mpeg">
+  </audio>
+    <audio id = "C6">
+    <source src="@routes.Assets.versioned("sounds/instrumentSources/C6.mp3")" type="audio/mpeg">
+  </audio>
+<input type="hidden" id="notePlayed"></input>
 
 <script src="@routes.Assets.versioned("javascript/canvasHandler.js")"></script>
-	<script src="@routes.Assets.versioned("javascript/reactStuff.js")"></script>
+  <script src="@routes.Assets.versioned("javascript/reactStuff.js")"></script>
+  <script src="@routes.Assets.versioned("javascript/handleMidi.js")"></script>
+
+
 
 }

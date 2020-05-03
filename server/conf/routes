@@ -41,4 +41,6 @@ GET        /getUsers5        controllers.ReactApp.getUsers
 POST        /playRecording    controllers.ReactApp.playRecording
 
 POST       /upload           controllers.ReactApp.upload
+POST       /instrumentUpload           controllers.ReactApp.instrumentUpload
+
 
