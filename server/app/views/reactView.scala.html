@@ -15,6 +15,10 @@
     <input type="hidden" id="usersRoute" value="@routes.ReactApp.getUsers()">
     <input type="hidden" id="getUserRoute" value="routes.ReactApp.getUserIdBySongId()">
     <input type="hidden" id="recordingsList" value="@routes.ReactApp.recordingsList()">
+    <input type="hidden" id="getInstruments" value="@routes.ReactApp.getInstrument()">
+    <input type="hidden" id="loadInstrumentAudio" value="@routes.ReactApp.loadInstrumentIntoSequencer()">
+
+
     <input type="hidden" id="playSong" value="@routes.ReactApp.playRecording()">
     <input type="hidden" id="filePath" value="@routes.Assets.versioned("audioSource/audio.mp3")">
 
@@ -180,7 +184,7 @@
     <audio id = "F5">
     <source src="@routes.Assets.versioned("sounds/instrumentSources/F5.mp3")" type="audio/mpeg">
   </audio>
-    <audio id = "F#5">
+    <audio id = "Gb5">
     <source src="@routes.Assets.versioned("sounds/instrumentSources/Gb5.mp3")" type="audio/mpeg">
   </audio>
 

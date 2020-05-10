@@ -14,6 +14,8 @@ const usersRoute = document.getElementById("usersRoute").value;
 const getUserRoute = document.getElementById("getUserRoute").value;
 const recordingsList = document.getElementById("recordingsList").value;
 const playRecording = document.getElementById("playSong").value;
+const instrumentsList = document.getElementById("getInstruments").value;
+const loadInstrumentPath = document.getElementById("loadInstrumentAudio").value;
 
 
 let sessionUsername = "";
@@ -376,12 +378,15 @@ class ProjectPageComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      midinotes: ""
+      midinotes: "",
+      instruments: []
     };
   }
 
   componentDidMount() {
     this.loadMidiData();
+    this.loadInstruments();
+
   }
   render() {
     canv.style.display = "block"
@@ -390,18 +395,70 @@ class ProjectPageComponent extends React.Component {
       'Project Sequencer',
       
       ce('h2', null, 'Your Project'),
+      'Instrument: ',
+      ce('select', {onChange: e => this.loadInstrument(e)}, 
+          this.state.instruments.map(inst => ce('option', { key: inst.id }, inst.instrumentName))
+        //ce('option', 0, "Tst")
+        ),
+      ce('br'),
       ce('button', { onClick: e => this.homePressed(e) }, 'Home')
-      );
+
+      )
   }
 
   loadMidiData() {
     console.log("loading midi data")
   }
+  handleSelectChange(e) {
+    console.log("handling select")
+  }
+
+  loadInstrument(id) {
+    console.log("Instrument " + id.target.value + " is playing")
+    //Get song by id here
+    fetch(loadInstrumentPath, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Csrf-Token': csrfToken },
+        body: JSON.stringify(id.target.value)
+    }).then(res => res.json()).then(data => {
+        if(data) {
+          console.log("uploaded")
+        } else {
+          console.log("not uploaded")
+        }
+          /*if(this.hasSong) {
+            document.getElementById("tmpMaker").style.display="none";
+          }
+          var song = document.createElement("AUDIO");
+          song.setAttribute("src", document.getElementById("filePath").value)
+          song.setAttribute("controls", "controls");
+          song.setAttribute("id", "tmpMaker");
+          document.body.appendChild(song);
+          this.setState( { hasSong: true } );
+          console.log("yay")
+        } else {
+                     //TODO
+          console.log("Error: Could not play song")
+          //this.setState({ taskMessage: "Failed to delete" })
+        } */
+    });
+
+    //Play song:
+
+  }
+
 
 
   homePressed(e) {
     canv.style.display = "none"
     this.props.goToHome()
+  }
+
+  loadInstruments() {
+    console.log("Loading instruments")
+    fetch(instrumentsList).then(res => res.json()).then(instruments => this.setState({ instruments }));
+
+  
   }
 
 }
@@ -415,7 +472,7 @@ class InstrumentsPageComponent extends React.Component {
   }
 
   componentDidMount() {
-
+    this.loadInstruments()
   }
 
   render() {
@@ -439,9 +496,15 @@ class InstrumentsPageComponent extends React.Component {
 
       );
   }
+  playSong() {
+    console.log("this should actually not do anything")
+  }
 
   loadInstruments() {
     console.log("Loading instruments")
+    fetch(instrumentsList).then(res => res.json()).then(instruments => this.setState({ instruments }));
+
+  
   }
 
   homePressed(e) {

@@ -42,5 +42,8 @@ POST        /playRecording    controllers.ReactApp.playRecording
 
 POST       /upload           controllers.ReactApp.upload
 POST       /instrumentUpload           controllers.ReactApp.instrumentUpload
+POST       /loadInstrumentAudio        controllers.ReactApp.loadInstrumentIntoSequencer
+
+GET        /getInstrument    controllers.ReactApp.getInstrument
 
 

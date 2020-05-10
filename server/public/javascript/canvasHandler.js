@@ -73,7 +73,11 @@
           let realY=0;
           let iy = 0;
 
-
+        if(event.space) {
+          console.log("space pressed")
+          toggled=!toggled
+          lastPos = 28
+        }
         if(event.shiftKey) {
         drawGridElement(ix, iy, false)
         indexesOfReds.pop()
@@ -109,7 +113,7 @@
   ctx.stroke()
   let lastPos = 28
 let toggled = true
-myCanvas.addEventListener('keydown', (e) => {
+window.addEventListener('keydown', (e) => {
     if(e.keyCode == 32){
         //your code
         console.log("space pressed")
