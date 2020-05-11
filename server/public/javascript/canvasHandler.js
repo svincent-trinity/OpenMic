@@ -100,12 +100,14 @@ const updateMidiDb = document.getElementById("updateMidiDb").value;
     socket.onmessage = (event) => {
       //outputArea.value += '\n' + event.data;
       console.log("This is from the websocket!")
-      console.log(event.data.split(","))
-      let split = event.data.split(",")
-      console.log(event.data[0])
-      indexesOfReds.push([split[0],split[1]])
-      console.log(indexesOfReds)
-      updateMidi(projectId, indexesOfReds)
+      if(event.data != "Keep Alive Msg") {
+        console.log(event.data.split(","))
+        let split = event.data.split(",")
+        console.log(event.data[0])
+        indexesOfReds.push([split[0],split[1]])
+        console.log(indexesOfReds)
+        updateMidi(projectId, indexesOfReds)
+     }
       /*const split = event.data.split(",")
       let tmp = split[0]
       let tmpArr = []
@@ -118,6 +120,10 @@ const updateMidiDb = document.getElementById("updateMidiDb").value;
     socket.onclose = function(){
         setTimeout(setupWebSocket, 1000);
     };
+    function keepWsAlive() {
+      socket.send("Keep Alive Msg")
+    }
+    setInterval(keepWsAlive, 1000);
 
     function setupWebSocket() {
       socket = new WebSocket(socketRoute.replace("http", "ws"));
