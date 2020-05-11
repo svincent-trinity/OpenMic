@@ -1,8 +1,6 @@
 @(currUser: String, userPrivacy: String)(implicit request: RequestHeader, flash: Flash)
 
-
-
-<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
 
 <h1>Welcome, @currUser</h1>
 <h2>Edit Your Profile</h2>

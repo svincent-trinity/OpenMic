@@ -1,0 +1,18 @@
+html {
+    background-color: #808080;
+
+}
+
+.loginText { 
+    color: black;
+    font-family: 'Inconsolata', monospace;
+    margin-top: 20%;
+    margin-left: 35%;
+}
+
+.createUserText {
+    color: black;
+    font-family: 'Inconsolata', monospace;
+    margin-top: -5%;
+    margin-left: 55%;
+}

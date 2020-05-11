@@ -1,7 +1,7 @@
 @(instrumentForm: Form[InstrumentData])(implicit request: MessagesRequestHeader, flash: Flash)
 
 @main("OpenMic"){
-<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+  <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
 
   <input type="hidden" id="ws-route" value="@routes.ReactApp.socket.absoluteURL">
 

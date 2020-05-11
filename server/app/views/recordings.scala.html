@@ -1,7 +1,7 @@
 @(currUser: String)(implicit request: RequestHeader, flash: Flash)
 
 
-<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
   <audio id = "song">
     <source src="@routes.Assets.versioned("sounds/recordings/Gartosis.mp3")" type="audio/mp3">
   </audio>
