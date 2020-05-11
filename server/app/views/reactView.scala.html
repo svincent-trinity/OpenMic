@@ -3,6 +3,9 @@
 @main("OpenMic"){
 <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
 
+  <input type="hidden" id="ws-route" value="@routes.ReactApp.socket.absoluteURL">
+
+
 	<input type="hidden" id="csrfToken" value="@helper.CSRF.getToken.value">
     <input type="hidden" id="validateRoute" value="@routes.ReactApp.validate()">
     <input type="hidden" id="tasksRoute" value="@routes.ReactApp.projectsList()">

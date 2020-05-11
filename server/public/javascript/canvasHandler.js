@@ -1,9 +1,48 @@
 
     let takenSpaces = []
 
+    const socketRoute = document.getElementById("ws-route").value;
+    console.log(socketRoute)
+    const socket = new WebSocket(socketRoute.replace("http", "ws"));
+
+
+
+
     //var recButton = document.getElementById("startRec");
     var myCanvas = document.getElementById("sequencerCanvas");
-    var ctx = myCanvas.getContext("2d");   
+    var ctx = myCanvas.getContext("2d"); 
+
+
+    socket.onopen = () => { 
+      //ctx.beginPath();
+      //ctx.arc(0, 0, 10, 0, 2*Math.PI);
+      //ctx.strokeStyle = myColor;
+      //ctx.stroke();
+      //socket.send("New user connected.");
+      //let retString = (0 + " " + 0 + " " + myColor);
+      //  socket.send(retString);
+    }
+    socket.onmessage = (event) => {
+      //outputArea.value += '\n' + event.data;
+      console.log("This is from the websocket!")
+      console.log(event.data.split(","))
+      let split = event.data.split(",")
+      console.log(event.data[0])
+      indexesOfReds.push([split[0],split[1]])
+      console.log(event.data)
+      /*const split = event.data.split(",")
+      let tmp = split[0]
+      let tmpArr = []
+      for(let i = 0; i < split.Length-1; i++) {
+        tmpArr.push([split[i], split[i+1]])
+      }
+      indexesOfReds = tmpArr
+      console.log(indexesOfReds)*/
+    }
+
+
+
+
      let s = 28
      let pL = s
      let pT = s
@@ -64,7 +103,7 @@
          console.log(indexesOfReds)
          let pos = {
           x: e.clientX-myCanvas.offsetLeft,
-          y: e.clientY-myCanvas.offsetLeft+document.documentElement.scrollTop
+          y: e.clientY-myCanvas.offsetTop+document.documentElement.scrollTop
 
           };
        
@@ -98,7 +137,9 @@
             }
         }
         if(!indexesOfReds.includes([ix,iy])){
-        indexesOfReds.push([ix,iy])
+        //indexesOfReds.push([ix,iy])
+        socket.send([ix,iy])
+        //socket.send(indexesOfReds)
       }
               drawGridElement(ix, iy, true)
 

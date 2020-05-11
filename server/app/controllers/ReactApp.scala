@@ -26,15 +26,35 @@ import java.io.File;
 import java.nio.file.Files;
 import java.io.FileOutputStream; 
 import java.io.OutputStream; 
-import java.io.PrintWriter
+import java.io.PrintWriter;
+
+
+//WebSocket Stuff
+import play.api.libs.json._
+import akka.actor.Actor
+import play.api.libs.streams.ActorFlow
+import akka.actor.ActorSystem
+import akka.stream.Materializer
+import actors.ChatActor
+import akka.actor.Props
+import actors.ChatManager
+
 
 
 
 
 @Singleton
-class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider, cc: MessagesControllerComponents)(implicit ec: ExecutionContext)
+class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider, cc: MessagesControllerComponents)(implicit ec: ExecutionContext, system: ActorSystem, mat: Materializer)
   extends MessagesAbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
 
+    val manager = system.actorOf(Props[ChatManager], "Manager")
+
+  def socket = WebSocket.accept[String, String] { request =>
+    println("Getting socket")
+    ActorFlow.actorRef { out =>
+      ChatActor.props(out, manager)
+    }
+  }
     private val model = new UserProjectsDatabaseModel(db)
 
     val instrumentForm = Form(mapping(
