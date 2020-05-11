@@ -97,6 +97,7 @@ class LoginComponent extends React.Component {
         ce('br'),
         ce('button', {onClick: e => this.login(e)}, 'Login'),
         ce('span', {id: "login-message"}, this.state.loginMessage),
+        ce('br'),
         ce('h2', {className: "createUserText"}, 'Create User:'),
         ce('br'),
         'Username: ',
