@@ -27,6 +27,8 @@ const uploadInstrumentDiv = document.getElementById("instrument_upload");
 uploadInstrumentDiv.style.display = "none"
 
 
+
+
 class OpenMicMainComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -78,8 +80,9 @@ class LoginComponent extends React.Component {
 	}
 
 	render() {
-		return ce('div', null,
-        ce('h2', null, 'Login: '),
+    return ce('div', {},
+        ce('h2', {className: "loginText"},
+           'Login: '),
         ce('br'),
         'Username: ',
         ce('input', {type: "text", id: "loginName", value: this.state.loginName, onChange: e=> this.changeHandler(e)}),
@@ -89,7 +92,7 @@ class LoginComponent extends React.Component {
         ce('br'),
         ce('button', {onClick: e => this.login(e)}, 'Login'),
         ce('span', {id: "login-message"}, this.state.loginMessage),
-        ce('h2', null, 'Create User:'),
+        ce('h2', {className: "createUserText"}, 'Create User:'),
         ce('br'),
         'Username: ',
         ce('input', {type: "text", id: "createName", value: this.state.createName, onChange: e=> this.changeHandler(e)}),

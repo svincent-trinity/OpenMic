@@ -2,7 +2,7 @@
 
 @(currUser: String, allUsers: Iterable[String], projects: ArrayBuffer[String], projectData: Form[ProjectData])(implicit request: MessagesRequestHeader, flash: Flash)
 @main("OpenMic") {
-<link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+<link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
 <h1>Welcome, @currUser</h1>
 
 
