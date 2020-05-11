@@ -148,6 +148,8 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
         withJsonBody[]
     }*/
 
+
+
     def recordingsList = Action.async { implicit request =>
         withSessionUsername { username =>
         model.getRecordings().map(recs =>
@@ -156,11 +158,45 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
 
     }
 
+    def getNotes = Action.async { implicit request =>
+      println("Getting notes")
+        withSessionUserid { userid =>
+            withJsonBody[String] { itemId =>
+                println(itemId)
+                val seq = scala.concurrent.Await.result(model.getNotes(itemId.toInt), Duration(50000, "millis"))
+                Future.successful(Ok(Json.toJson(seq(0).getOrElse("None"))))
+            }
+             
+        }
+    }
+
     def getInstrument = Action.async { implicit request =>
         withSessionUsername { username =>
         model.getInstruments().map(recs =>
             Ok(Json.toJson(recs)))
     }
+
+    }
+
+    def updateMidi = Action.async { implicit request =>
+      withSessionUserid { userid =>
+          withJsonBody[String] { task =>
+            println(task)
+            println("parsing")
+              var parsed = task.split("####");
+              println(parsed)
+              println("size: " + parsed.size)
+              if(parsed.size > 1) {
+                println("updating midi data")
+                var endString = parsed.tail.mkString(",")
+                println(endString)
+
+                model.updateMidiData(parsed(0).toInt, endString) 
+              }
+              Future.successful(Ok(Json.toJson(true)))
+          }
+           
+      }
 
     }
 

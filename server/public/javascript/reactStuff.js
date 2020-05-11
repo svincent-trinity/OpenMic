@@ -16,9 +16,12 @@ const recordingsList = document.getElementById("recordingsList").value;
 const playRecording = document.getElementById("playSong").value;
 const instrumentsList = document.getElementById("getInstruments").value;
 const loadInstrumentPath = document.getElementById("loadInstrumentAudio").value;
+//const notesFromDb = document.getElementById("notesFromDb").value;
 
 
 let sessionUsername = "";
+let projectId = 0;
+
 
 const canv = document.getElementById("sequencerCanvas");
 canv.style.display = "none"
@@ -153,12 +156,14 @@ class LoginComponent extends React.Component {
 }
 
 class HomePageComponent extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = { projects: [], newProject: "", isPublic: ["Private", "Public"], userSelected: "Private", projectName: "" };
   }
   
   componentDidMount() {
+    indexesOfReds = []
     this.loadTasks();
   }
 
@@ -171,7 +176,7 @@ class HomePageComponent extends React.Component {
       ce('br'),
       ce('table', null, 
         ce('thead', null, ce('tr', null, ce('th', null, "Project Name"), ce('th', null, "Privacy"))),
-          ce('tbody', null, this.state.projects.map(task => ce('tr', { key: task.id, onClick: e => this.props.goToProject() }, ce('td', null, task.text), ce('td', null, task.isPublic))
+          ce('tbody', null, this.state.projects.map(task => ce('tr', { key: task.id, onClick: e => { projectId=task.id; getNotes(projectId); console.log(projectId); this.props.goToProject() } }, ce('td', null, task.text), ce('td', null, task.isPublic))
             ), ce('tr', null, ce('td', null,
               ce('input', {type: 'text', value: this.state.newProject, placeholder: 'Create a new project', onChange: e => this.handleChange(e) })
 
@@ -202,9 +207,11 @@ class HomePageComponent extends React.Component {
   }
 
   enterProject(id) {
-        ce(ProjectPageComponent)
-            this.props.goToProject
+        //ce(ProjectPageComponent)
+        console.log(id.target.value)
+            projectId = id.target.value;
 
+            this.props.goToProject()
 
   }
 
@@ -235,6 +242,7 @@ class HomePageComponent extends React.Component {
 
   handleChange(e) {
     this.setState({newProject: e.target.value})
+
   }
   handleSelectChange(e) {
     this.setState({userSelected: e.target.value})
@@ -384,6 +392,7 @@ class ProjectPageComponent extends React.Component {
   }
 
   componentDidMount() {
+
     this.loadMidiData();
     this.loadInstruments();
 
@@ -407,7 +416,18 @@ class ProjectPageComponent extends React.Component {
   }
 
   loadMidiData() {
-    console.log("loading midi data")
+    /*console.log("loading midi data")
+    fetch(notesFromDb).then(res => res.json()).then(instruments => {
+      var tmp = instruments.split(",")
+      var parsed = []
+      for(let i=0; i<tmp.length(); i++) {
+        if(i%2===0) {
+          parsed.push([tmp[i-1], tmp[i]])
+        }
+      }
+      indexesOfReds = parsed
+    })*/
+    getNotes(projectId)
   }
   handleSelectChange(e) {
     console.log("handling select")

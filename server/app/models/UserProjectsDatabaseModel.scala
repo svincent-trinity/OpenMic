@@ -1,6 +1,7 @@
 package models
 
 import slick.jdbc.PostgresProfile.api._
+import slick.jdbc.JdbcActionComponent
 import scala.concurrent.ExecutionContext
 import models.Tables._
 import scala.concurrent.Future
@@ -100,6 +101,30 @@ class UserProjectsDatabaseModel(db: Database)(implicit ec: ExecutionContext) {
                 user.username
             }).result
         )
+
+    }
+
+    def updateMidiData(itemId: Int, midiData: String) = {
+        /*val q = for { l <- Items if l.itemId === itemId } yield l.mididata
+        println(q)
+        q.update(Option(midiData))
+        db.run(q)*/
+        //db.run(Items.filter(_.itemId === itemId).update("john"))
+
+        //sqlu"UPDATE items SET mididata = ${midiData} WHERE item_id = ${itemId};"
+        val action = Tables.Items.filter(_.itemId === itemId).map(m => m.mididata).update(Option(midiData))
+        db.run(action)
+    }
+
+    def getNotes(songId: Int): Future[Seq[Option[String]]] = {
+        db.run(
+            (for {
+                item <- Items if item.itemId === songId
+            } yield {
+                item.mididata
+            }).result
+        ).map(midiStuff => { println(midiStuff); midiStuff })
+
 
     }
 

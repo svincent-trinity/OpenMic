@@ -1,9 +1,83 @@
+const notesFromDb = document.getElementById("notesFromDb").value;
+const updateMidiDb = document.getElementById("updateMidiDb").value;
 
+
+  function getNotes(id) {
+    console.log("project " + id + " is playing")
+    //Get song by id here
+    fetch(notesFromDb, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Csrf-Token': csrfToken },
+        body: JSON.stringify(id.toString())
+    }).then(res => res.json()).then(data => {
+      console.log(data)
+      if(data === "None") {
+         console.log("no data")
+      } else {
+             var tmp = data.split(",")
+      var parsed = []
+      for(let i=0; i<tmp.length; i++) {
+        if(i%2!=0) {
+          parsed.push([tmp[i-1], tmp[i]])
+        }
+      }
+      console.log(parsed)
+      indexesOfReds = parsed
+      }
+        /*if(data) {
+          if(this.hasSong) {
+            document.getElementById("tmpMaker").style.display="none";
+          }
+          var song = document.createElement("AUDIO");
+          song.setAttribute("src", document.getElementById("filePath").value)
+          song.setAttribute("controls", "controls");
+          song.setAttribute("id", "tmpMaker");
+          document.body.appendChild(song);
+          this.setState( { hasSong: true } );
+          console.log("yay")
+        } else {
+                     //TODO
+          console.log("Error: Could not play song")
+          //this.setState({ taskMessage: "Failed to delete" })
+        } */
+    });
+
+    //Play song:
+
+  }
+
+  function updateMidi(id, midiNotes) {
+    let putTogether = id.toString()
+
+    for(let i=0; i<midiNotes.length; i++) {
+      putTogether += "####"
+      putTogether += midiNotes[i][0].toString()
+      putTogether += "####"
+      putTogether += midiNotes[i][1].toString()
+    }
+    console.log(putTogether)
+      fetch(updateMidiDb, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json', 'Csrf-Token': csrfToken },
+          body: JSON.stringify(putTogether)
+      }).then(res => res.json()).then(data => {
+        console.log(data)
+        if(data) {
+           console.log("Good")
+        } else {
+          console.log("Bad")
+          //indexesOfReds = parsedData
+        }
+
+      });
+
+  
+  }
     let takenSpaces = []
 
     const socketRoute = document.getElementById("ws-route").value;
     console.log(socketRoute)
-    const socket = new WebSocket(socketRoute.replace("http", "ws"));
+    let socket = new WebSocket(socketRoute.replace("http", "ws"));
 
 
 
@@ -21,6 +95,7 @@
       //socket.send("New user connected.");
       //let retString = (0 + " " + 0 + " " + myColor);
       //  socket.send(retString);
+      //updateMidi(projectId, indexesOfReds)
     }
     socket.onmessage = (event) => {
       //outputArea.value += '\n' + event.data;
@@ -29,7 +104,8 @@
       let split = event.data.split(",")
       console.log(event.data[0])
       indexesOfReds.push([split[0],split[1]])
-      console.log(event.data)
+      console.log(indexesOfReds)
+      updateMidi(projectId, indexesOfReds)
       /*const split = event.data.split(",")
       let tmp = split[0]
       let tmpArr = []
@@ -39,9 +115,13 @@
       indexesOfReds = tmpArr
       console.log(indexesOfReds)*/
     }
+    socket.onclose = function(){
+        setTimeout(setupWebSocket, 1000);
+    };
 
-
-
+    function setupWebSocket() {
+      socket = new WebSocket(socketRoute.replace("http", "ws"));
+    }
 
      let s = 28
      let pL = s
