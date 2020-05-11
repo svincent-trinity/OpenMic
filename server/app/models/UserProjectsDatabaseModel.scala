@@ -1,6 +1,7 @@
 package models
 
 import slick.jdbc.PostgresProfile.api._
+import slick.jdbc.JdbcActionComponent
 import scala.concurrent.ExecutionContext
 import models.Tables._
 import scala.concurrent.Future
@@ -103,6 +104,30 @@ class UserProjectsDatabaseModel(db: Database)(implicit ec: ExecutionContext) {
 
     }
 
+    def updateMidiData(itemId: Int, midiData: String) = {
+        /*val q = for { l <- Items if l.itemId === itemId } yield l.mididata
+        println(q)
+        q.update(Option(midiData))
+        db.run(q)*/
+        //db.run(Items.filter(_.itemId === itemId).update("john"))
+
+        //sqlu"UPDATE items SET mididata = ${midiData} WHERE item_id = ${itemId};"
+        val action = Tables.Items.filter(_.itemId === itemId).map(m => m.mididata).update(Option(midiData))
+        db.run(action)
+    }
+
+    def getNotes(songId: Int): Future[Seq[Option[String]]] = {
+        db.run(
+            (for {
+                item <- Items if item.itemId === songId
+            } yield {
+                item.mididata
+            }).result
+        ).map(midiStuff => { println(midiStuff); midiStuff })
+
+
+    }
+
     def getRecordings(): Future[Seq[RecordingData]] = {
         db.run(
             (for {
@@ -130,6 +155,244 @@ class UserProjectsDatabaseModel(db: Database)(implicit ec: ExecutionContext) {
                 recording <- Recordings if recording.recordingId === recId
             } yield {
                 recording.audio
+            }).result
+        )
+    }
+
+    def getInstrumentAudioC4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.c4
+            }).result
+        )
+    }
+    def getInstrumentAudioC5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.c5
+            }).result
+        )
+    }
+    def getInstrumentAudioC6(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.c6
+            }).result
+        )
+    }
+
+    def getInstrumentAudioDb4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.db4
+            }).result
+        )
+    }
+    def getInstrumentAudioDb5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.db5
+            }).result
+        )
+    }
+    def getInstrumentAudioD4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.d4
+            }).result
+        )
+    }
+    def getInstrumentAudioD5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.d5
+            }).result
+        )
+    }
+    def getInstrumentAudioEb4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.eb4
+            }).result
+        )
+    }
+    def getInstrumentAudioEb5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.eb5
+            }).result
+        )
+    }
+    def getInstrumentAudioE4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.e4
+            }).result
+        )
+    }
+    def getInstrumentAudioE5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.e5
+            }).result
+        )
+    }
+    def getInstrumentAudioF4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.f4
+            }).result
+        )
+    }
+    def getInstrumentAudioF5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.f5
+            }).result
+        )
+    }
+    def getInstrumentAudioGb4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.gb4
+            }).result
+        )
+    }
+    def getInstrumentAudioGb5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.gb5
+            }).result
+        )
+    }
+    def getInstrumentAudioG4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.g4
+            }).result
+        )
+    }
+    def getInstrumentAudioG5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.g5
+            }).result
+        )
+    }
+    def getInstrumentAudioAb4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.ab4
+            }).result
+        )
+    }
+    def getInstrumentAudioAb5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.ab5
+            }).result
+        )
+    }
+    def getInstrumentAudioA4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.a4
+            }).result
+        )
+    }
+    def getInstrumentAudioA5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.a5
+            }).result
+        )
+    }
+    def getInstrumentAudioBb4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.bb4
+            }).result
+        )
+    }
+    def getInstrumentAudioBb5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.bb5
+            }).result
+        )
+    }
+    def getInstrumentAudioB4(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.b4
+            }).result
+        )
+    }
+    def getInstrumentAudioB5(instId: Int): Future[Seq[Array[Byte]]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.instrumentId === instId
+            } yield {
+                instrument.b5
+            }).result
+        )
+    }
+
+
+    def getInstrumentIdByName(instName: String): Future[Seq[Int]] = {
+        db.run(
+            (for {
+                instrument <- Instruments if instrument.name === instName
+            } yield {
+                instrument.instrumentId
             }).result
         )
     }

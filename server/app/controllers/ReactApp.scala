@@ -26,15 +26,35 @@ import java.io.File;
 import java.nio.file.Files;
 import java.io.FileOutputStream; 
 import java.io.OutputStream; 
-import java.io.PrintWriter
+import java.io.PrintWriter;
+
+
+//WebSocket Stuff
+import play.api.libs.json._
+import akka.actor.Actor
+import play.api.libs.streams.ActorFlow
+import akka.actor.ActorSystem
+import akka.stream.Materializer
+import actors.ChatActor
+import akka.actor.Props
+import actors.ChatManager
+
 
 
 
 
 @Singleton
-class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider, cc: MessagesControllerComponents)(implicit ec: ExecutionContext)
+class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider, cc: MessagesControllerComponents)(implicit ec: ExecutionContext, system: ActorSystem, mat: Materializer)
   extends MessagesAbstractController(cc) with HasDatabaseConfigProvider[JdbcProfile] {
 
+    val manager = system.actorOf(Props[ChatManager], "Manager")
+
+  def socket = WebSocket.accept[String, String] { request =>
+    println("Getting socket")
+    ActorFlow.actorRef { out =>
+      ChatActor.props(out, manager)
+    }
+  }
     private val model = new UserProjectsDatabaseModel(db)
 
     val instrumentForm = Form(mapping(
@@ -58,6 +78,7 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
     implicit val userDataReads = Json.reads[UserData]
     implicit val projectItemWrites = Json.writes[ProjectItem]
     implicit val recordingDataWrites = Json.writes[RecordingData]
+    implicit val instrumentDataWrites = Json.writes[InstrumentData]
 
     def withJsonBody[A](f: A => Future[Result])(implicit request: Request[AnyContent], reads: Reads[A]): Future[Result] = {
       request.body.asJson.map {body => 
@@ -127,11 +148,55 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
         withJsonBody[]
     }*/
 
+
+
     def recordingsList = Action.async { implicit request =>
         withSessionUsername { username =>
         model.getRecordings().map(recs =>
             Ok(Json.toJson(recs)))
     }
+
+    }
+
+    def getNotes = Action.async { implicit request =>
+      println("Getting notes")
+        withSessionUserid { userid =>
+            withJsonBody[String] { itemId =>
+                println(itemId)
+                val seq = scala.concurrent.Await.result(model.getNotes(itemId.toInt), Duration(50000, "millis"))
+                Future.successful(Ok(Json.toJson(seq(0).getOrElse("None"))))
+            }
+             
+        }
+    }
+
+    def getInstrument = Action.async { implicit request =>
+        withSessionUsername { username =>
+        model.getInstruments().map(recs =>
+            Ok(Json.toJson(recs)))
+    }
+
+    }
+
+    def updateMidi = Action.async { implicit request =>
+      withSessionUserid { userid =>
+          withJsonBody[String] { task =>
+            println(task)
+            println("parsing")
+              var parsed = task.split("####");
+              println(parsed)
+              println("size: " + parsed.size)
+              if(parsed.size > 1) {
+                println("updating midi data")
+                var endString = parsed.tail.mkString(",")
+                println(endString)
+
+                model.updateMidiData(parsed(0).toInt, endString) 
+              }
+              Future.successful(Ok(Json.toJson(true)))
+          }
+           
+      }
 
     }
 
@@ -144,6 +209,7 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
         os.close()
         return true
     }
+
 
 
     def projectsList = Action.async { implicit request => 
@@ -212,6 +278,17 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
                 case e @ JsError(_) => Future.successful(Redirect(routes.ReactApp.load()))
             }
          }.getOrElse(Future.successful(Redirect(routes.ReactApp.load())))*/
+
+    }
+
+    def loadInstrumentIntoSequencer = Action.async { implicit request =>
+      println("loading notes")
+      withJsonBody[String] { instrument =>
+            println(instrument)
+            val b = loadInstrumentAudio(instrument)
+            if(b) Future.successful(Ok(Json.toJson(true)))
+            else Future.successful(Ok(Json.toJson(false)))
+      }
 
     }
 
@@ -296,6 +373,212 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
       Ok(Json.toJson(true))
     }
 
+    def loadInstrumentAudio(instName: String)(implicit request: Request[AnyContent]): Boolean = {
+        val id = scala.concurrent.Await.result(model.getInstrumentIdByName(instName), Duration(50000, "millis"))
+        //C4
+        var bytes = scala.concurrent.Await.result(model.getInstrumentAudioC4(id(0)), Duration(50000, "millis"))
+        var selectedAudio = "C4.mp3"
+        var filePath:String = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        var file = new File(filePath)
+        var os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //C5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioC5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "C5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //C6
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioC6(id(0)), Duration(50000, "millis"))
+        selectedAudio = "C6.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+
+        //Db4
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioDb4(id(0)), Duration(50000, "millis"))
+        selectedAudio = "Db4.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //Db5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioDb5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "Db5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //D4
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioD4(id(0)), Duration(50000, "millis"))
+        selectedAudio = "D4.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //D5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioD5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "D5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //Eb4
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioEb4(id(0)), Duration(50000, "millis"))
+        selectedAudio = "Eb4.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //Eb5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioEb5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "Eb5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //E4
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioE4(id(0)), Duration(50000, "millis"))
+        selectedAudio = "E4.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //E5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioE5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "E5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //f4
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioF4(id(0)), Duration(50000, "millis"))
+        selectedAudio = "F4.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //f5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioF5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "F5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //Gb4
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioGb4(id(0)), Duration(50000, "millis"))
+        selectedAudio = "Gb4.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //Gb5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioGb5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "Gb5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()        
+        //G4
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioG4(id(0)), Duration(50000, "millis"))
+        selectedAudio = "G4.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //G5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioG5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "G5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close() 
+        //Ab4
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioAb4(id(0)), Duration(50000, "millis"))
+        selectedAudio = "Ab4.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //Ab5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioAb5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "Ab5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()        
+        //A4
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioA4(id(0)), Duration(50000, "millis"))
+        selectedAudio = "A4.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //A5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioA5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "A5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close() 
+        //Bb4
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioBb4(id(0)), Duration(50000, "millis"))
+        selectedAudio = "Bb4.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //Bb5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioBb5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "Bb5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()        
+        //B4
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioB4(id(0)), Duration(50000, "millis"))
+        selectedAudio = "B4.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close()
+        //B5
+        bytes = scala.concurrent.Await.result(model.getInstrumentAudioB5(id(0)), Duration(50000, "millis"))
+        selectedAudio = "B5.mp3"
+        filePath = Paths.get("server/public/sounds/instrumentSources/" + selectedAudio).toString()
+        file = new File(filePath)
+        os = new FileOutputStream(file)
+        os.write(bytes(0))
+        os.close() 
+
+        return true
+    }
 
     def logout = TODO /*Action { implicit request =>
         Ok(Json.toJson(true)).withNewSession

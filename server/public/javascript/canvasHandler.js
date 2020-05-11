@@ -1,9 +1,128 @@
+const notesFromDb = document.getElementById("notesFromDb").value;
+const updateMidiDb = document.getElementById("updateMidiDb").value;
 
+
+  function getNotes(id) {
+    console.log("project " + id + " is playing")
+    //Get song by id here
+    fetch(notesFromDb, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'Csrf-Token': csrfToken },
+        body: JSON.stringify(id.toString())
+    }).then(res => res.json()).then(data => {
+      console.log(data)
+      if(data === "None") {
+         console.log("no data")
+      } else {
+             var tmp = data.split(",")
+      var parsed = []
+      for(let i=0; i<tmp.length; i++) {
+        if(i%2!=0) {
+          parsed.push([tmp[i-1], tmp[i]])
+        }
+      }
+      console.log(parsed)
+      indexesOfReds = parsed
+      }
+        /*if(data) {
+          if(this.hasSong) {
+            document.getElementById("tmpMaker").style.display="none";
+          }
+          var song = document.createElement("AUDIO");
+          song.setAttribute("src", document.getElementById("filePath").value)
+          song.setAttribute("controls", "controls");
+          song.setAttribute("id", "tmpMaker");
+          document.body.appendChild(song);
+          this.setState( { hasSong: true } );
+          console.log("yay")
+        } else {
+                     //TODO
+          console.log("Error: Could not play song")
+          //this.setState({ taskMessage: "Failed to delete" })
+        } */
+    });
+
+    //Play song:
+
+  }
+
+  function updateMidi(id, midiNotes) {
+    let putTogether = id.toString()
+
+    for(let i=0; i<midiNotes.length; i++) {
+      putTogether += "####"
+      putTogether += midiNotes[i][0].toString()
+      putTogether += "####"
+      putTogether += midiNotes[i][1].toString()
+    }
+    console.log(putTogether)
+      fetch(updateMidiDb, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json', 'Csrf-Token': csrfToken },
+          body: JSON.stringify(putTogether)
+      }).then(res => res.json()).then(data => {
+        console.log(data)
+        if(data) {
+           console.log("Good")
+        } else {
+          console.log("Bad")
+          //indexesOfReds = parsedData
+        }
+
+      });
+
+  
+  }
     let takenSpaces = []
+
+    const socketRoute = document.getElementById("ws-route").value;
+    console.log(socketRoute)
+    let socket = new WebSocket(socketRoute.replace("http", "ws"));
+
+
+
 
     //var recButton = document.getElementById("startRec");
     var myCanvas = document.getElementById("sequencerCanvas");
-    var ctx = myCanvas.getContext("2d");   
+    var ctx = myCanvas.getContext("2d"); 
+
+
+    socket.onopen = () => { 
+      //ctx.beginPath();
+      //ctx.arc(0, 0, 10, 0, 2*Math.PI);
+      //ctx.strokeStyle = myColor;
+      //ctx.stroke();
+      //socket.send("New user connected.");
+      //let retString = (0 + " " + 0 + " " + myColor);
+      //  socket.send(retString);
+      //updateMidi(projectId, indexesOfReds)
+    }
+    socket.onmessage = (event) => {
+      //outputArea.value += '\n' + event.data;
+      console.log("This is from the websocket!")
+      console.log(event.data.split(","))
+      let split = event.data.split(",")
+      console.log(event.data[0])
+      indexesOfReds.push([split[0],split[1]])
+      console.log(indexesOfReds)
+      updateMidi(projectId, indexesOfReds)
+      /*const split = event.data.split(",")
+      let tmp = split[0]
+      let tmpArr = []
+      for(let i = 0; i < split.Length-1; i++) {
+        tmpArr.push([split[i], split[i+1]])
+      }
+      indexesOfReds = tmpArr
+      console.log(indexesOfReds)*/
+    }
+    socket.onclose = function(){
+        setTimeout(setupWebSocket, 1000);
+    };
+
+    function setupWebSocket() {
+      socket = new WebSocket(socketRoute.replace("http", "ws"));
+    }
+
      let s = 28
      let pL = s
      let pT = s
@@ -64,7 +183,7 @@
          console.log(indexesOfReds)
          let pos = {
           x: e.clientX-myCanvas.offsetLeft,
-          y: e.clientY-myCanvas.offsetLeft+document.documentElement.scrollTop
+          y: e.clientY-myCanvas.offsetTop+document.documentElement.scrollTop
 
           };
        
@@ -73,7 +192,11 @@
           let realY=0;
           let iy = 0;
 
-
+        if(event.space) {
+          console.log("space pressed")
+          toggled=!toggled
+          lastPos = 28
+        }
         if(event.shiftKey) {
         drawGridElement(ix, iy, false)
         indexesOfReds.pop()
@@ -94,7 +217,9 @@
             }
         }
         if(!indexesOfReds.includes([ix,iy])){
-        indexesOfReds.push([ix,iy])
+        //indexesOfReds.push([ix,iy])
+        socket.send([ix,iy])
+        //socket.send(indexesOfReds)
       }
               drawGridElement(ix, iy, true)
 
@@ -109,7 +234,7 @@
   ctx.stroke()
   let lastPos = 28
 let toggled = true
-myCanvas.addEventListener('keydown', (e) => {
+window.addEventListener('keydown', (e) => {
     if(e.keyCode == 32){
         //your code
         console.log("space pressed")

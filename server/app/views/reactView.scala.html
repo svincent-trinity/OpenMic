@@ -3,6 +3,9 @@
 @main("OpenMic"){
   <link rel="stylesheet" href="@routes.Assets.versioned("stylesheets/main.css")">
 
+  <input type="hidden" id="ws-route" value="@routes.ReactApp.socket.absoluteURL">
+
+
 	<input type="hidden" id="csrfToken" value="@helper.CSRF.getToken.value">
     <input type="hidden" id="validateRoute" value="@routes.ReactApp.validate()">
     <input type="hidden" id="tasksRoute" value="@routes.ReactApp.projectsList()">
@@ -15,6 +18,13 @@
     <input type="hidden" id="usersRoute" value="@routes.ReactApp.getUsers()">
     <input type="hidden" id="getUserRoute" value="routes.ReactApp.getUserIdBySongId()">
     <input type="hidden" id="recordingsList" value="@routes.ReactApp.recordingsList()">
+    <input type="hidden" id="getInstruments" value="@routes.ReactApp.getInstrument()">
+    <input type="hidden" id="loadInstrumentAudio" value="@routes.ReactApp.loadInstrumentIntoSequencer()">
+    <input type="hidden" id="notesFromDb" value="@routes.ReactApp.getNotes()">
+    <input type="hidden" id="updateMidiDb" value="@routes.ReactApp.updateMidi()">
+
+
+
     <input type="hidden" id="playSong" value="@routes.ReactApp.playRecording()">
     <input type="hidden" id="filePath" value="@routes.Assets.versioned("audioSource/audio.mp3")">
 
@@ -180,7 +190,7 @@
     <audio id = "F5">
     <source src="@routes.Assets.versioned("sounds/instrumentSources/F5.mp3")" type="audio/mpeg">
   </audio>
-    <audio id = "F#5">
+    <audio id = "Gb5">
     <source src="@routes.Assets.versioned("sounds/instrumentSources/Gb5.mp3")" type="audio/mpeg">
   </audio>
 
