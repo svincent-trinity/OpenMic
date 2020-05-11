@@ -350,7 +350,7 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
       )
       //println(finBytes(0))
       var instrumentName = ""
-      var userid = ""
+      var userid = "1"
       var privacy = ""
       var description = ""
 
@@ -361,7 +361,7 @@ class ReactApp @Inject() (protected val dbConfigProvider: DatabaseConfigProvider
         println(args._1)
         //println(args._2(0)(0))
         if(args._1 == "instrumentName") instrumentName = args._2(0)
-        if(args._1 == "userid") userid = args._2(0)
+        //if(args._1 == "userid") userid = args._2(0)
         if(args._1 == "Privacy") privacy = args._2(0)
         if(args._1 == "description") description = args._2(0)
 

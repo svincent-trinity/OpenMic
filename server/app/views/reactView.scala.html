@@ -52,7 +52,7 @@
           @helper.CSRF.formField
 
           @helper.inputText(instrumentForm("instrumentName"))
-          @helper.inputText(instrumentForm("userid"))
+          <!--@helper.inputText(instrumentForm("userid"))-->
           @helper.inputText(instrumentForm("description"))
 
           @helper.select(instrumentForm("Privacy"), Seq[(String, String)](("Private", "Private"), ("Public", "Public")))

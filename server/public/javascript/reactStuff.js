@@ -347,8 +347,8 @@ class PublicPageComponent extends React.Component {
 
       ce('h2', null, 'Public Projects'),
       ce('table', null,
-        ce('thead', null, ce('tr', null, ce('th', null, "Project Name"), ce('th', null, "Owner"))),
-          ce('tbody', null, this.state.publics.map(task => ce('tr', { key: task.id, onClick: e => this.enterProject(task.id) }, ce('td', null, task.text), ce('td', null, task.id))
+        ce('thead', null, ce('tr', null, ce('th', null, "Project Name"))),
+          ce('tbody', null, this.state.publics.map(task => ce('tr', { key: task.id, onClick: e => this.enterProject(task.id) }, ce('td', null, task.text))
 
             ))
 
@@ -502,8 +502,8 @@ class InstrumentsPageComponent extends React.Component {
     return ce('div', null, 
       'Instruments Workshop',
             ce('table', null, 
-        ce('thead', null, ce('tr', null, ce('th', null, "Instrument Name"), ce('th', null, "Owner"))),
-          ce('tbody', null, this.state.instruments.map(inst => ce('tr', { key: inst.id, onClick: e => this.playSong(inst.id) }, ce('td', null, inst.name), ce('td', null, inst.description))
+        ce('thead', null, ce('tr', null, ce('th', null, "Instrument Name"), ce('th', null, "Description"))),
+          ce('tbody', null, this.state.instruments.map(inst => ce('tr', { key: inst.id, onClick: e => this.playSong(inst.id) }, ce('td', null, inst.instrumentName), ce('td', null, inst.description))
             )
             )
           ),
