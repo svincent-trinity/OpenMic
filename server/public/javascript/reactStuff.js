@@ -182,7 +182,7 @@ class HomePageComponent extends React.Component {
     return ce('div', {}, 
       null ,
      
-      ce('div', {classname: "homePage"}, 
+      ce('div', {/*className: "homePage"*/}, 
         ce('img', {src: imgLogo, className: "homePageLogo"}, null),
         ce('h2', {className: "welcomeText"}, 'Welcome, ' + sessionUsername + "!"),
         ce('h2', {className: "projectsText"}, 'My Projects'),
@@ -191,6 +191,8 @@ class HomePageComponent extends React.Component {
           ce('thead', null, ce('tr', null, ce('th', null, "Project Name"), ce('th', null, "Privacy"))),
             ce('tbody', null, this.state.projects.map(task => ce('tr', { key: task.id, onClick: e => { projectId=task.id; getNotes(projectId); console.log(projectId); this.props.goToProject() } }, ce('td', null, task.text), ce('td', null, task.isPublic))
               ), ce('tr', null, ce('td', null,
+                ce('input', {type: 'text', value: this.state.newProject, placeholder: 'Create a new project', onChange: e => this.handleChange(e) })
+
               ), ce('td', null, 
           ce('select', {onChange: e => this.handleSelectChange(e)}, 
             this.state.isPublic.map((us, index) => ce('option', { key: index }, us))
