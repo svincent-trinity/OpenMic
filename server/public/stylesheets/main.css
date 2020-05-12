@@ -1,18 +1,278 @@
 html {
-    background-color: #808080;
+    background-color: #3b3b3b;
 
 }
 
-.loginText { 
-    color: black;
+.homeBtn {
+    /*styling for home button on each page */
+}
+
+.font {
     font-family: 'Inconsolata', monospace;
-    margin-top: 20%;
-    margin-left: 35%;
 }
 
-.createUserText {
-    color: black;
-    font-family: 'Inconsolata', monospace;
-    margin-top: -5%;
-    margin-left: 55%;
+/*#region -------- Login Page Styling ------- */
+
+
+.loginBanner{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    position: static;
+    width: 100%;
 }
+    /*#region --- Login/Create User JS Elements - DO NOT REMOVE ---*/
+    .loginText { 
+        position: absolute;
+        color: #cecece;
+        font-family: 'Inconsolata', monospace;
+        margin-top: 5%;
+        margin-left: 35%;
+    }
+
+    .loginName {
+        position: absolute;
+        font-family: 'Inconsolata', monospace;
+        margin-top: 7%;
+        margin-left: 35%;
+    }
+
+    .loginUserName { 
+        position: absolute;
+        color: #cecece;
+        font-family: 'Inconsolata', monospace;
+        margin-top: 7%;
+        margin-left: 30%;
+    }
+
+    .loginPass {
+        position: absolute;
+        font-family: 'Inconsolata', monospace;
+        margin-top: 9%;
+        margin-left: 35%;
+    }
+
+    .loginPassName { 
+        position: absolute;
+        color: #cecece;
+        font-family: 'Inconsolata', monospace;
+        margin-top: 9%;
+        margin-left: 30%;
+    }
+
+    .loginBtn {
+        position: absolute;
+        color: black;
+        font-family: 'Inconsolata', monospace;
+        margin-top: 12%;
+        margin-left: 36%;
+    }
+
+    .createUserText {
+        position: absolute;
+        color: #cecece;
+        font-family: 'Inconsolata', monospace;
+        margin-top: -1%;
+        margin-left: 55%;
+    }
+
+    .createUserName{
+        position: absolute;
+        color: #cecece;
+        font-family: 'Inconsolata', monospace;
+        margin-top: 2%;
+        margin-left: 53%;
+    }
+
+    .createName {
+        position: absolute;
+        font-family: 'Inconsolata', monospace;
+        margin-top: 2%;
+        margin-left: 58%;
+    }
+
+    .createUserPassName {
+        position: absolute;
+        color: #cecece;
+        font-family: 'Inconsolata', monospace;
+        margin-top: 4%;
+        margin-left: 53%;
+    }
+
+    .createPass {
+        position: absolute;
+        font-family: 'Inconsolata', monospace;
+        margin-top: 4%;
+        margin-left: 58%;
+    }
+
+    .createUsrBtn {
+        position: absolute;
+        color: black;
+        font-family: 'Inconsolata', monospace;
+        margin-top: 7%;
+        margin-left: 57%;
+    }
+    /*#endregion*/
+
+/*#endregion*/ 
+
+/*#region ------- Home Page Styling -------*/
+
+.homePage { 
+    position: absolute !important;
+    margin-left: 21%;
+    top: 0 !important;
+}
+
+.homePageNav {
+    background: #767676;
+    width: 20%;
+    height: 100%;
+    padding: 0;
+}
+
+.homePageLogo {
+    position: absolute;
+    top: 0 !important;
+    left: 0 !important;
+    margin-left: 20%;
+    width: 40%;
+}
+
+/*#region --- Home Page JS Elements - DO NOT REMOVE ---*/
+
+
+
+    .welcomeText {
+        position: absolute;
+        color: #cecece;
+        font-family: 'Inconsolata', monospace;
+        margin-left: 25%;
+        margin-top: 10%;
+    }
+
+    .projectsText {
+        position: absolute;
+        color: #cecece;
+        font-family: 'Inconsolata', monospace;
+        margin-left: 25%;
+        margin-top: 15%;
+    }
+
+    .table {
+        position: absolute;
+        color: black;
+        font-family: 'Inconsolata', monospace;
+        margin-left: 25%;
+        margin-top: 20%;
+        width: 40%;
+    }
+
+    .goToPublic {
+        position: absolute;
+        color: black;
+        font-family: 'Inconsolata', monospace;
+        margin-left: 25%;
+        margin-top: 25%;
+
+    }
+
+    .goToRecordrings {
+        position: absolute;
+        color: black;
+        font-family: 'Inconsolata', monospace;
+        margin-left: 25%;
+        margin-top: 30%;
+
+    }
+
+    .goToInstruments{
+
+        position: absolute;
+        color: black;
+        font-family: 'Inconsolata', monospace;
+        margin-left: 25%;
+        margin-top: 35%;
+
+    }
+
+    .logOut {
+        margin-top: 75%;
+    }
+
+/*#endregion*/
+
+
+/*#endregion*/
+
+/*#region ------- Public Projects Styling -------*/
+
+.publicProjectsText {
+
+}
+
+.publicProjects {
+
+}
+
+.ppTable {
+
+}
+
+.projectNameText {
+
+}
+
+.ownerText {
+
+}
+
+
+
+/*#endregion*/
+
+/*#region ------- Project Page Styling -------*/
+
+.projSeq {
+
+
+}
+
+.yourProject {
+
+}
+
+.instrument {
+
+}
+
+
+
+/*#endregion*/
+
+/*#region ------- Instruments Page Styling -------*/
+
+.instrumentWkshp {
+
+}
+
+.instrumentTable {
+
+}
+
+.instrumentName {
+
+}
+
+.instrumentOwnerName {
+
+}
+
+/*#endregion*/
+
+/*#region ------- Recordings Page Styling ------- */
+
+
+
+/*#endregion*/

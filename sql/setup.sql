@@ -1,4 +1,4 @@
-CREATE USER samvincent WITH PASSWORD 'password';
+CREATE USER mlampton WITH PASSWORD 'pwd';
 
-CREATE DATABASE openmic WITH OWNER=samvincent;
+CREATE DATABASE openmic WITH OWNER=mlampton;
 

@@ -16,8 +16,9 @@ const recordingsList = document.getElementById("recordingsList").value;
 const playRecording = document.getElementById("playSong").value;
 const instrumentsList = document.getElementById("getInstruments").value;
 const loadInstrumentPath = document.getElementById("loadInstrumentAudio").value;
+const img = document.getElementById("banner").value;
+const imgLogo = document.getElementById("logo").value;
 //const notesFromDb = document.getElementById("notesFromDb").value;
-
 
 let sessionUsername = "";
 let projectId = 0;
@@ -85,27 +86,30 @@ class LoginComponent extends React.Component {
 	}
 
 	render() {
+
     return ce('div', {},
-        ce('h2', {className: "loginText"},
-           'Login: '),
+        ce('img', { src: img, className: "loginBanner" }, null),
         ce('br'),
-        'Username: ',
-        ce('input', {type: "text", id: "loginName", value: this.state.loginName, onChange: e=> this.changeHandler(e)}),
+        ce('h2', {className: "loginText"}, 'Login: '),
         ce('br'),
-        'Password: ',
-        ce('input', {type: "password", id: "loginPass", value: this.state.loginPass, onChange: e=> this.changeHandler(e)}),
+        ce('p', {className: "loginUserName"}, 'Username: '),
+        ce('input', {type: "text", id: "loginName", value: this.state.loginName, onChange: e=> this.changeHandler(e), className: "loginName"}),
         ce('br'),
-        ce('button', {onClick: e => this.login(e)}, 'Login'),
+        ce('p', {className: "loginPassName"}, 'Password: '),
+        ce('input', {type: "password", id: "loginPass", value: this.state.loginPass, onChange: e=> this.changeHandler(e), className: "loginPass"}),
+        ce('br'),
+        ce('button', {onClick: e => this.login(e), className: "loginBtn"}, 'Login'),
+        ce('br'),
         ce('span', {id: "login-message"}, this.state.loginMessage),
         ce('h2', {className: "createUserText"}, 'Create User:'),
         ce('br'),
-        'Username: ',
-        ce('input', {type: "text", id: "createName", value: this.state.createName, onChange: e=> this.changeHandler(e)}),
+        ce('p', {className: "createUserName"}, 'Username: '),
+        ce('input', {type: "text", className: "createName", id: "createName", value: this.state.createName, onChange: e=> this.changeHandler(e)}),
         ce('br'),
-        'Password: ',
-        ce('input', {type: "password", id: "createPass", value: this.state.createPass, onChange: e=> this.changeHandler(e)}),
+        ce('p', {className: "createUserPassName"}, 'Password: '),
+        ce('input', {type: "password", className: "createPass", id: "createPass", value: this.state.createPass, onChange: e=> this.changeHandler(e)}),
         ce('br'),
-        ce('button', {onClick: e => this.createUser(e)}, 'Create User'),
+        ce('button', {onClick: e => this.createUser(e), className: "createUsrBtn"}, 'Create User'),
         ce('span', {id: "create-message"}, this.state.createMessage)
 
 	);
@@ -119,7 +123,7 @@ class LoginComponent extends React.Component {
 	}
 
   login(e) {
-  const username = this.state.loginName;
+  /*const username = this.state.loginName;
   const password = this.state.loginPass;
   this.runUsername();
   fetch(validateRoute, {
@@ -134,7 +138,8 @@ class LoginComponent extends React.Component {
              //TODO
             this.setState({ loginMessage: "Login Failed" });
         }
-    });
+    });*/
+    this.props.doLogin();
   }
   createUser(e) {
     const username = this.state.createName;
@@ -172,41 +177,50 @@ class HomePageComponent extends React.Component {
 
 
   render() {
-    return ce('div', null, 
-      'OpenMic',
-      ce('h2', null, 'Welcome, ' + sessionUsername + "!"),
-      ce('h2', null, 'My Projects'),
-      ce('br'),
-      ce('table', null, 
-        ce('thead', null, ce('tr', null, ce('th', null, "Project Name"), ce('th', null, "Privacy"))),
-          ce('tbody', null, this.state.projects.map(task => ce('tr', { key: task.id, onClick: e => { projectId=task.id; getNotes(projectId); console.log(projectId); this.props.goToProject() } }, ce('td', null, task.text), ce('td', null, task.isPublic))
-            ), ce('tr', null, ce('td', null,
-              ce('input', {type: 'text', value: this.state.newProject, placeholder: 'Create a new project', onChange: e => this.handleChange(e) })
+    return ce('div', {}, 
+      null ,
+     
+      ce('div', {classname: "homePage"}, 
+        ce('img', {src: imgLogo, className: "homePageLogo"}, null),
+        ce('h2', {className: "welcomeText"}, 'Welcome, ' + sessionUsername + "!"),
+        ce('h2', {className: "projectsText"}, 'My Projects'),
+        ce('br'),
+        ce('table', {className: "table"}, 
+          ce('thead', null, ce('tr', null, ce('th', null, "Project Name"), ce('th', null, "Privacy"))),
+            ce('tbody', null, this.state.projects.map(task => ce('tr', { key: task.id, onClick: e => { projectId=task.id; getNotes(projectId); console.log(projectId); this.props.goToProject() } }, ce('td', null, task.text), ce('td', null, task.isPublic))
+              ), ce('tr', null, ce('td', null,
+              ), ce('td', null, 
+          ce('select', {onChange: e => this.handleSelectChange(e)}, 
+            this.state.isPublic.map((us, index) => ce('option', { key: index }, us))
+          )
 
-            ), ce('td', null, 
-        ce('select', {onChange: e => this.handleSelectChange(e)}, 
-          this.state.isPublic.map((us, index) => ce('option', { key: index }, us))
-        )
+              ), ce('td', null, 
 
-            ), ce('td', null, 
+          ce('button', {onClick: e => this.handleAddClick(e)}, 'Create Project!'),
+          this.state.projectName
+          )
+              )
+            )),
 
-        ce('button', {onClick: e => this.handleAddClick(e)}, 'Create Project!'),
-        this.state.projectName
-        )
-            )
-          )),
+        
+        ce('br')
 
+ 
+        ),
+        ce('div', {className: "homePageNav"}, 
+        ce('button', {onClick: e => this.props.goToPublic(), className: "goToRecordings"}, 'Enter Public Lobby'),
+       ce('br'),
+        ce('button', {onClick: e => this.props.goToRecordings(), className: "goToRecordings"}, 'See Recording Feed'),
+        ce('br'),
+        ce('button', {onClick: e => this.props.goToInstruments(), className: "goToRecordings"}, 'Instrument Workshop'),
+        ce('br'),
+
+        ce('button', { onClick: e => this.props.doLogout(), className: "logOut" }, 'Log out')
+      ),
       
-      ce('br'),
-
-      ce('button', {onClick: e => this.props.goToPublic()}, 'Enter Public Lobby'),
-      ce('button', {onClick: e => this.props.goToRecordings()}, 'See Recording Feed'),
-      ce('button', {onClick: e => this.props.goToInstruments()}, 'Instrument Workshop'),
-
-
-      ce('br'),
-      ce('button', { onClick: e => this.props.doLogout() }, 'Log out')
+      
       );
+    
   }
 
   enterProject(id) {
@@ -348,9 +362,9 @@ class PublicPageComponent extends React.Component {
     return ce('div', null, 
       'Public Projects',
 
-      ce('h2', null, 'Public Projects'),
-      ce('table', null,
-        ce('thead', null, ce('tr', null, ce('th', null, "Project Name"), ce('th', null, "Owner"))),
+      ce('h2', {className: "publicProjects"}, 'Public Projects'),
+      ce('table', {className: "ppTable"},
+        ce('thead', null, ce('tr', null, ce('th', {className: "projectNameText"}, "Project Name"), ce('th', {className: "ownerText"}, "Owner"))),
           ce('tbody', null, this.state.publics.map(task => ce('tr', { key: task.id, onClick: e => this.enterProject(task.id) }, ce('td', null, task.text), ce('td', null, task.id))
 
             ))
@@ -359,7 +373,7 @@ class PublicPageComponent extends React.Component {
       ),
  
       ce('br'),
-      ce('button', { onClick: e => this.props.goToHome() }, 'Home')
+      ce('button', { onClick: e => this.props.goToHome(), className: "homeBtn" }, 'Home')
       );
   }
 
@@ -403,17 +417,17 @@ class ProjectPageComponent extends React.Component {
   render() {
     canv.style.display = "block"
 
-    return ce('div', null, 
+    return ce('div', {className: "projSeq"}, 
       'Project Sequencer',
       
-      ce('h2', null, 'Your Project'),
-      'Instrument: ',
+      ce('h2', {className: "yourProject"}, 'Your Project'),
+      ce('h2', {className: "instrument"}, 'Instruments: '),
       ce('select', {onChange: e => this.loadInstrument(e)}, 
           this.state.instruments.map(inst => ce('option', { key: inst.id }, inst.instrumentName))
         //ce('option', 0, "Tst")
         ),
       ce('br'),
-      ce('button', { onClick: e => this.homePressed(e) }, 'Home')
+      ce('button', { onClick: e => this.homePressed(e), className: "homebtn" }, 'Home')
 
       )
   }
