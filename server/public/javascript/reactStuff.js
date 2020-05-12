@@ -17,7 +17,7 @@ const playRecording = document.getElementById("playSong").value;
 const instrumentsList = document.getElementById("getInstruments").value;
 const loadInstrumentPath = document.getElementById("loadInstrumentAudio").value;
 //const notesFromDb = document.getElementById("notesFromDb").value;
-
+const loadingGif = document.getElementById("loadingGif").value;
 
 let sessionUsername = "";
 let projectId = 0;
@@ -31,7 +31,7 @@ uploadDiv.style.display = "none"
 const uploadInstrumentDiv = document.getElementById("instrument_upload");
 uploadInstrumentDiv.style.display = "none"
 
-
+let loadingScreen = ce('img', { id: "loader", src: loadingGif }, null);
 
 
 class OpenMicMainComponent extends React.Component {
@@ -544,13 +544,16 @@ class RecordingsPageComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: true,
       recordings: [],
       hasSong: false
     };
   }
 
   componentDidMount() {
+    this.showLoading();
     this.loadRecordings();
+    //this.stopShowingLoading();
   }
   render() {
     uploadDiv.style.display = "block"
@@ -558,25 +561,33 @@ class RecordingsPageComponent extends React.Component {
 
     return ce('div', null, 
       'Recording Feed',
+
             ce('table', null, 
         ce('thead', null, ce('tr', null, ce('th', null, "Recording Name"), ce('th', null, "Description"))),
           ce('tbody', null, this.state.recordings.map(rec => ce('tr', { key: rec.id, onClick: e => this.playSong(rec.id) }, ce('td', null, rec.name), ce('td', null, rec.description))
             )
             )
           ),
-
-      
+      ce('img', { id: "loader", src: loadingGif }, null),
       //ce('button', { onClick: e => this.homePressed(e) }, 'Upload a recording'),
-
       ce('button', { onClick: e => this.homePressed(e) }, 'Home'),
       ce('h2', null, 'Upload a Recording')
 
       );
   }
+  showLoading() {
+    //ce('img', { id: "loader", src: loadingGif }, null)
+
+    //document.getElementById("react-root").appendChild(loadingGif)
+  }
+  stopShowingLoading() {
+    console.log("stop loading")
+    document.getElementById("loader").style.display = "none"
+  }
 
   loadRecordings() {
-    fetch(recordingsList).then(res => res.json()).then(recordings => this.setState({ recordings }));
-
+    fetch(recordingsList).then(res => res.json()).then(recordings => { this.stopShowingLoading(); this.setState({ recordings } )});
+    //this.stopShowingLoading()
   }
   
   playSong(id) {
