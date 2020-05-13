@@ -125,7 +125,7 @@ class LoginComponent extends React.Component {
 	}
 
   login(e) {
-  const username = this.state.loginName;
+  /*const username = this.state.loginName;
   const password = this.state.loginPass;
   this.runUsername();
   fetch(validateRoute, {
@@ -140,7 +140,8 @@ class LoginComponent extends React.Component {
              //TODO
             this.setState({ loginMessage: "Login Failed" });
         }
-    });
+    });*/
+    this.props.doLogin();
 
   }
   createUser(e) {
@@ -363,13 +364,11 @@ class PublicPageComponent extends React.Component {
 
 
   render() {
-    return ce('div', null, 
-      'Public Projects',
-
-      ce('h2', {className: "publicProjects"}, 'Public Projects'),
+    return ce('div', null,
+      ce('h2', {className: "font"}, 'Public Projects'),
       ce('table', {className: "ppTable"},
-        ce('thead', null, ce('tr', null, ce('th', {className: "projectNameText"}, "Project Name"), ce('th', {className: "ownerText"}, "Owner"))),
-          ce('tbody', null, this.state.publics.map(task => ce('tr', { key: task.id, onClick: e => this.enterProject(task.id) }, ce('td', null, task.text), ce('td', null, task.id))
+        ce('thead', {className: "rowsPT"}, ce('tr', {className: "rowsPT"}, ce('th', {className: "font"}, "Project Name"), ce('th', {className: "font"}, "Owner"))),
+          ce('tbody', {className: "rowsPT"}, this.state.publics.map(task => ce('tr', { className: "rowsPT", key: task.id, onClick: e => this.enterProject(task.id) }, ce('td', {className: "font"}, task.text), ce('td', {className: "font"}, task.id))
 
 
             ))
@@ -400,7 +399,6 @@ class PublicPageComponent extends React.Component {
   openPublicProject() {
     console.log("project opened")
   }
-
 
 }
 
