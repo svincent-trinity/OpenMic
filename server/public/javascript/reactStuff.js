@@ -20,6 +20,7 @@ const img = document.getElementById("banner").value;
 const imgLogo = document.getElementById("logo").value;
 //const notesFromDb = document.getElementById("notesFromDb").value;
 const loadingGif = document.getElementById("loadingGif").value;
+const searchProjects = document.getElementById("searchProjects").value;
 
 let sessionUsername = "";
 let projectId = 0;
@@ -169,7 +170,7 @@ class HomePageComponent extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = { projects: [], newProject: "", isPublic: ["Private", "Public"], userSelected: "Private", projectName: "" };
+    this.state = { projects: [], newProject: "", isPublic: ["Private", "Public"], userSelected: "Private", projectName: "", searchBar: "" };
   }
   
   componentDidMount() {
@@ -204,9 +205,15 @@ class HomePageComponent extends React.Component {
           this.state.projectName
           )
               )
-            )),
+            ),
 
-        
+            ),
+
+                ce('br'),
+        ce('input', { className: "welcomeText", placeholder: 'Search for projects', onChange: e => this.handleProjectSearch(e)}),
+        ce('br'),
+
+        ce('button', { className: "welcomeText", onClick: e => this.searchForProject(e)}, 'Search'),
         ce('br')
 
 
@@ -225,6 +232,15 @@ class HomePageComponent extends React.Component {
       
       );
     
+  }
+
+  searchForProject(e) {
+    this.enterProject(1)
+  }
+
+  handleProjectSearch(e) {
+    this.state.searchBar = e.target.value
+    console.log(this.state.searchBar)
   }
 
   enterProject(id) {

@@ -159,6 +159,16 @@ class UserProjectsDatabaseModel(db: Database)(implicit ec: ExecutionContext) {
         )
     }
 
+    def getProjectByName(name: String): Future[Seq[Option[String]]] = {
+        db.run(
+            (for {
+                item <- Items if item.text === name
+            } yield {
+                item.mididata
+            }).result
+        ).map(midiStuff => { println(midiStuff); midiStuff })
+    }
+
     def getInstrumentAudioC4(instId: Int): Future[Seq[Array[Byte]]] = {
         db.run(
             (for {

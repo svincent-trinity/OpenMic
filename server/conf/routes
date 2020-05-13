@@ -48,6 +48,8 @@ POST        /midi            controllers.ReactApp.updateMidi
 
 GET        /getInstrument    controllers.ReactApp.getInstrument
 
+POST       /searchRoute      controllers.ReactApp.getProjectByName
+
 #WebSocket Route
 GET        /chatSocket         controllers.ReactApp.socket
 
