@@ -126,7 +126,7 @@ class LoginComponent extends React.Component {
 	}
 
   login(e) {
-  const username = this.state.loginName;
+  /*const username = this.state.loginName;
   const password = this.state.loginPass;
   this.runUsername();
   fetch(validateRoute, {
@@ -141,8 +141,8 @@ class LoginComponent extends React.Component {
              //TODO
             this.setState({ loginMessage: "Login Failed" });
         }
-    });
-    //this.props.doLogin();
+    });*/
+    this.props.doLogin();
 
   }
   createUser(e) {
