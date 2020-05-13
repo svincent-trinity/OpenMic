@@ -209,7 +209,7 @@ class HomePageComponent extends React.Component {
         
         ce('br')
 
- 
+
         ),
         ce('div', {className: "homePageNav"}, 
         ce('button', {onClick: e => this.props.goToPublic(), className: "goToRecordings"}, 'Enter Public Lobby'),
@@ -365,11 +365,10 @@ class PublicPageComponent extends React.Component {
   render() {
     return ce('div', null, 
       'Public Projects',
-
       ce('h2', {className: "publicProjects"}, 'Public Projects'),
       ce('table', {className: "ppTable"},
-        ce('thead', null, ce('tr', null, ce('th', {className: "projectNameText"}, "Project Name"), ce('th', {className: "ownerText"}, "Owner"))),
-          ce('tbody', null, this.state.publics.map(task => ce('tr', { key: task.id, onClick: e => this.enterProject(task.id) }, ce('td', null, task.text), ce('td', null, task.id))
+        ce('thead', null, ce('tr', null, ce('th', {className: "projectNameText"}, "Project Name"))),
+          ce('tbody', null, this.state.publics.map(task => ce('tr', { key: task.id, onClick: e => this.enterProject(task.id) }, ce('td', null, task.text))
 
 
             ))
@@ -378,7 +377,8 @@ class PublicPageComponent extends React.Component {
       ),
  
       ce('br'),
-      ce('button', { onClick: e => this.props.goToHome(), className: "homeBtn" }, 'Home')
+        ce('button', { onClick: e => this.props.goToHome(), className: "homeBtn" }, 'Home')
+      
       );
   }
 
