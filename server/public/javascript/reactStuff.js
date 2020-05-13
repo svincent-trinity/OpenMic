@@ -126,7 +126,7 @@ class LoginComponent extends React.Component {
 	}
 
   login(e) {
-  /*const username = this.state.loginName;
+  const username = this.state.loginName;
   const password = this.state.loginPass;
   this.runUsername();
   fetch(validateRoute, {
@@ -141,8 +141,8 @@ class LoginComponent extends React.Component {
              //TODO
             this.setState({ loginMessage: "Login Failed" });
         }
-    });*/
-    this.props.doLogin();
+    });
+    //this.props.doLogin();
 
   }
   createUser(e) {
@@ -211,10 +211,10 @@ class HomePageComponent extends React.Component {
             ),
 
                 ce('br'),
-        ce('input', { className: "welcomeText", placeholder: 'Search for projects', onChange: e => this.handleProjectSearch(e)}),
-        ce('br'),
+        //ce('input', { className: "welcomeText", placeholder: 'Search for projects', onChange: e => this.handleProjectSearch(e)}),
+        //ce('br'),
 
-        ce('button', { className: "welcomeText", onClick: e => this.searchForProject(e)}, 'Search'),
+        //ce('button', { className: "welcomeText", onClick: e => this.searchForProject()}, 'Search'),
 
         ce('br')
 
@@ -222,7 +222,7 @@ class HomePageComponent extends React.Component {
         ),
         ce('div', {className: "homePageNav"},
         ce('button', {onClick: e => this.props.goToPublic(), className: "goToRecordings"}, 'Enter Public Lobby'),
-       ce('br'),
+        ce('br'),
         ce('button', {onClick: e => this.props.goToRecordings(), className: "goToRecordings"}, 'See Recording Feed'),
         ce('br'),
         ce('button', {onClick: e => this.props.goToInstruments(), className: "goToRecordings"}, 'Instrument Workshop'),
@@ -236,7 +236,7 @@ class HomePageComponent extends React.Component {
 
   }
 
-  searchForProject(e) {
+  searchForProject() {
     this.enterProject(1)
   }
 

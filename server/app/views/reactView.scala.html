@@ -40,7 +40,7 @@
 
     </div>
     <canvas id="sequencerCanvas" width="800" height="400"></canvas>
-    <div id="file_upload">
+    <div id="file_upload" className = "margin">
         @helper.form(action = routes.ReactApp.upload, Symbol("enctype") -> "multipart/form-data") {
           @helper.CSRF.formField
           <input type="file" name="picture">
