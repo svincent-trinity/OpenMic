@@ -77,9 +77,9 @@ class LoginComponent extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-      loginName: "", 
-      loginPass: "", 
-      createName: "", 
+      loginName: "",
+      loginPass: "",
+      createName: "",
       createPass: "",
       loginMessage: "",
       createMessage: ""
@@ -126,7 +126,7 @@ class LoginComponent extends React.Component {
 	}
 
   login(e) {
-  const username = this.state.loginName;
+  /*const username = this.state.loginName;
   const password = this.state.loginPass;
   this.runUsername();
   fetch(validateRoute, {
@@ -136,12 +136,13 @@ class LoginComponent extends React.Component {
   }).then(res => res.json()).then(data => {
         if(data) {
           this.props.doLogin();
-            
+
         } else {
              //TODO
             this.setState({ loginMessage: "Login Failed" });
         }
-    });
+    });*/
+    this.props.doLogin();
 
   }
   createUser(e) {
@@ -172,7 +173,7 @@ class HomePageComponent extends React.Component {
     super(props);
     this.state = { projects: [], newProject: "", isPublic: ["Private", "Public"], userSelected: "Private", projectName: "", searchBar: "" };
   }
-  
+
   componentDidMount() {
     indexesOfReds = []
     this.loadTasks();
@@ -180,26 +181,26 @@ class HomePageComponent extends React.Component {
 
 
   render() {
-    return ce('div', {}, 
+    return ce('div', {},
       null ,
-     
-      ce('div', {/*className: "homePage"*/}, 
+
+      ce('div', {/*className: "homePage"*/},
         ce('img', {src: imgLogo, className: "homePageLogo"}, null),
         ce('h2', {className: "welcomeText"}, 'Welcome, ' + sessionUsername + "!"),
         ce('h2', {className: "projectsText"}, 'My Projects'),
         ce('br'),
-        ce('table', {className: "table"}, 
+        ce('table', {className: "table"},
           ce('thead', null, ce('tr', null, ce('th', null, "Project Name"), ce('th', null, "Privacy"))),
             ce('tbody', null, this.state.projects.map(task => ce('tr', { key: task.id, onClick: e => { projectId=task.id; getNotes(projectId); console.log(projectId); this.props.goToProject() } }, ce('td', null, task.text), ce('td', null, task.isPublic))
               ), ce('tr', null, ce('td', null,
                 ce('input', {type: 'text', value: this.state.newProject, placeholder: 'Create a new project', onChange: e => this.handleChange(e) })
 
-              ), ce('td', null, 
-          ce('select', {onChange: e => this.handleSelectChange(e)}, 
+              ), ce('td', null,
+          ce('select', {onChange: e => this.handleSelectChange(e)},
             this.state.isPublic.map((us, index) => ce('option', { key: index }, us))
           )
 
-              ), ce('td', null, 
+              ), ce('td', null,
 
           ce('button', {onClick: e => this.handleAddClick(e)}, 'Create Project!'),
           this.state.projectName
@@ -214,11 +215,12 @@ class HomePageComponent extends React.Component {
         ce('br'),
 
         ce('button', { className: "welcomeText", onClick: e => this.searchForProject(e)}, 'Search'),
+
         ce('br')
 
 
         ),
-        ce('div', {className: "homePageNav"}, 
+        ce('div', {className: "homePageNav"},
         ce('button', {onClick: e => this.props.goToPublic(), className: "goToRecordings"}, 'Enter Public Lobby'),
        ce('br'),
         ce('button', {onClick: e => this.props.goToRecordings(), className: "goToRecordings"}, 'See Recording Feed'),
@@ -228,10 +230,10 @@ class HomePageComponent extends React.Component {
 
         ce('button', { onClick: e => this.props.doLogout(), className: "logOut" }, 'Log out')
       ),
-      
-      
+
+
       );
-    
+
   }
 
   searchForProject(e) {
@@ -258,7 +260,7 @@ class HomePageComponent extends React.Component {
   }
 
   loadTasks() {
-    
+
     fetch(tasksRoute).then(res => res.json()).then(projects => {
       //var parsed = projects
 
@@ -269,12 +271,12 @@ class HomePageComponent extends React.Component {
       this.setState({ projects })
 
     });
-    
+
 
     //ce('br')
-    
-    
- 
+
+
+
   }
 
   handleChange(e) {
@@ -340,7 +342,7 @@ class HomePageComponent extends React.Component {
         } else {
                      //TODO
           this.setState({ taskMessage: "Failed to delete" })
-        } 
+        }
     });
   }
 
@@ -356,7 +358,7 @@ class HomePageComponent extends React.Component {
         } else {
                      //TODO
           this.setState({ taskMessage: "Failed to delete" })
-        } 
+        }
     });
   }
 
@@ -371,7 +373,7 @@ class PublicPageComponent extends React.Component {
     this.state = { publics: [] };
     //this.state = { publics: [] };
   }
-  
+
   componentDidMount() {
     this.loadPublics();
     //this.setState({ userSelected: usersAvailable[0] });
@@ -379,22 +381,21 @@ class PublicPageComponent extends React.Component {
 
 
   render() {
-    return ce('div', null, 
-      'Public Projects',
-      ce('h2', {className: "publicProjects"}, 'Public Projects'),
+    return ce('div', null,
+      ce('h2', {className: "font"}, 'Public Projects'),
       ce('table', {className: "ppTable"},
-        ce('thead', null, ce('tr', null, ce('th', {className: "projectNameText"}, "Project Name"))),
-          ce('tbody', null, this.state.publics.map(task => ce('tr', { key: task.id, onClick: e => this.enterProject(task.id) }, ce('td', null, task.text))
+        ce('thead', {className: "rowsPT"}, ce('tr', {className: "rowsPT"}, ce('th', {className: "font"}, "Project Name"), ce('th', {className: "font"}, "Owner"))),
+          ce('tbody', {className: "rowsPT"}, this.state.publics.map(task => ce('tr', { className: "rowsPT", key: task.id, onClick: e => this.enterProject(task.id) }, ce('td', {className: "font"}, task.text), ce('td', {className: "font"}, task.id))
 
 
             ))
 
 
       ),
- 
+
       ce('br'),
         ce('button', { onClick: e => this.props.goToHome(), className: "homeBtn" }, 'Home')
-      
+
       );
   }
 
@@ -417,7 +418,6 @@ class PublicPageComponent extends React.Component {
     console.log("project opened")
   }
 
-
 }
 
 class ProjectPageComponent extends React.Component {
@@ -438,12 +438,12 @@ class ProjectPageComponent extends React.Component {
   render() {
     canv.style.display = "block"
 
-    return ce('div', {className: "projSeq"}, 
+    return ce('div', {className: "projSeq"},
       'Project Sequencer',
-      
+
       ce('h2', {className: "yourProject"}, 'Your Project'),
       ce('h2', {className: "instrument"}, 'Instruments: '),
-      ce('select', {onChange: e => this.loadInstrument(e)}, 
+      ce('select', {onChange: e => this.loadInstrument(e)},
           this.state.instruments.map(inst => ce('option', { key: inst.id }, inst.instrumentName))
         //ce('option', 0, "Tst")
         ),
@@ -516,7 +516,7 @@ class ProjectPageComponent extends React.Component {
     console.log("Loading instruments")
     fetch(instrumentsList).then(res => res.json()).then(instruments => this.setState({ instruments }));
 
-  
+
   }
 
 }
@@ -537,16 +537,16 @@ class InstrumentsPageComponent extends React.Component {
     uploadInstrumentDiv.style.display = "block"
 
 
-    return ce('div', null, 
+    return ce('div', null,
       'Instruments Workshop',
-            ce('table', null, 
+            ce('table', null,
         ce('thead', null, ce('tr', null, ce('th', null, "Instrument Name"), ce('th', null, "Description"))),
           ce('tbody', null, this.state.instruments.map(inst => ce('tr', { key: inst.id, onClick: e => this.playSong(inst.id) }, ce('td', null, inst.instrumentName), ce('td', null, inst.description))
             )
             )
           ),
 
-      
+
       //ce('button', { onClick: e => this.homePressed(e) }, 'Upload a recording'),
 
       ce('button', { onClick: e => this.homePressed(e) }, 'Home'),
@@ -562,7 +562,7 @@ class InstrumentsPageComponent extends React.Component {
     console.log("Loading instruments")
     fetch(instrumentsList).then(res => res.json()).then(instruments => this.setState({ instruments }));
 
-  
+
   }
 
   homePressed(e) {
@@ -570,7 +570,7 @@ class InstrumentsPageComponent extends React.Component {
     this.props.goToHome()
   }
 
-  
+
 
 }
 
@@ -593,10 +593,10 @@ class RecordingsPageComponent extends React.Component {
     uploadDiv.style.display = "block"
 
 
-    return ce('div', null, 
+    return ce('div', null,
       'Recording Feed',
 
-            ce('table', null, 
+            ce('table', null,
         ce('thead', null, ce('tr', null, ce('th', null, "Recording Name"), ce('th', null, "Description"))),
           ce('tbody', null, this.state.recordings.map(rec => ce('tr', { key: rec.id, onClick: e => this.playSong(rec.id) }, ce('td', null, rec.name), ce('td', null, rec.description))
             )
@@ -623,7 +623,7 @@ class RecordingsPageComponent extends React.Component {
     fetch(recordingsList).then(res => res.json()).then(recordings => { this.stopShowingLoading(); this.setState({ recordings } )});
     //this.stopShowingLoading()
   }
-  
+
   playSong(id) {
     console.log("song " + id + " is playing")
     //Get song by id here
@@ -647,7 +647,7 @@ class RecordingsPageComponent extends React.Component {
                      //TODO
           console.log("Error: Could not play song")
           //this.setState({ taskMessage: "Failed to delete" })
-        } 
+        }
     });
 
     //Play song:

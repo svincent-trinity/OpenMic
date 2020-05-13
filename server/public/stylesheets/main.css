@@ -9,6 +9,7 @@ html {
 
 .font {
     font-family: 'Inconsolata', monospace;
+    color: black;
 }
 
 /*#region -------- Login Page Styling ------- */
@@ -214,25 +215,17 @@ html {
 
 /*#region ------- Public Projects Styling -------*/
 
-.publicProjectsText {
 
-}
-
-.publicProjects {
-
-}
 
 .ppTable {
-
+    border: 3px white;
+    border-collapse: collapse;
 }
 
-.projectNameText {
-
+.rowsPT {
+    border: 3px white; 
 }
 
-.ownerText {
-
-}
 
 
 
